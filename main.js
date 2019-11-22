@@ -69,3 +69,6 @@ stream.on('tweet', function(tweet) {
   //client.channels.get('647330755055452180').send(tweet.user.screen_name + ': ' +  tweet.text)
   client.channels.get(config.twitterChannelID).send(`**${tweet.user.name}** tweeted: https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
 });
+stream.on('error', function(error) {
+  console.log(error)
+});
