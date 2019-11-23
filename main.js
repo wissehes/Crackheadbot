@@ -60,7 +60,7 @@ fs.readdir("./commands/", (err, files) => {
 });
  
 client.login(config.token);
-
+// Twitter Notifications
 var stream = t.stream('statuses/filter', { follow: config.twitterUsers });
 stream.on('tweet', function(tweet) {
   //console.log(tweet)
@@ -72,3 +72,61 @@ stream.on('tweet', function(tweet) {
 stream.on('error', function(error) {
   console.log(error)
 });
+
+//Twitch Notifications via webhooks with IFTTT because twitch api = confusing
+const http = require('http');
+const express = require('express');
+const app = express();
+app.use(express.json());
+/*app.use('/', function(req, res) {
+    res.send('todo api works');
+});*/
+app.get('/', function(req, res) {
+  res.send('todo api works');
+  client.channels.get(config.twitterChannelID).send(req.query.message)
+});
+app.post('/twitch', function(req, res) {
+  //res.send('uwu');
+  res.type('json')
+  if(req.body.password != config.webhookPassword)
+    return res.end(JSON.stringify({error: 401, message: "not authorized"}));
+
+
+    var ChannelName = req.body.ChannelName
+    var ChannelUrl = req.body.ChannelUrl
+    var CreatedAt = req.body.CreatedAt
+    var StreamPreview = req.body.StreamPreview
+    var Game = req.body.Game
+    const embed = {
+      "title": ChannelUrl,
+      "url": ChannelUrl,
+      "color": 6570404,
+      "footer": {
+        "text": CreatedAt
+      },
+      "image": {
+        "url": StreamPreview
+      },
+      "author": {
+        "name": ChannelName+" is now streaming"
+      },
+      "fields": [
+        {
+          "name": "Playing",
+          "value": Game,
+          "inline": true
+        },
+        {
+          "name": "Started at (streamer timezone)",
+          "value": CreatedAt,
+          "inline": true
+        }
+      ]
+    };
+  client.channels.get(config.twitterChannelID).send({embed})
+  /*.catch((error) => {return res.end(JSON.stringify(error))})*/
+  res.end(JSON.stringify(embed))
+});
+const server = http.createServer(app);
+const port = 1414;
+server.listen(port);
