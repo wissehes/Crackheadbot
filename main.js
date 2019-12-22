@@ -53,9 +53,25 @@ fs.readdir("./commands/", (err, files) => {
     let props = require(`./commands/${file}`);
     // Get just the command name from the file name
     let commandName = file.split(".")[0];
-    console.log(`Attempting to load command ${commandName}`);
+    console.log(`[COMMANDS] Attempting to load command ${commandName}`);
     // Here we simply store the whole thing in the command Enmap. We're not running it right now.
     client.commands.set(commandName, props);
+  });
+});
+
+client.words = new Enmap();
+
+fs.readdir("./words/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    if (!file.endsWith(".js")) return;
+    // Load the command file itself
+    let props = require(`./words/${file}`);
+    // Get just the command name from the file name
+    let wordName = file.split(".")[0];
+    console.log(`[WORDS] Attempting to load word ${wordName}`);
+    // Here we simply store the whole thing in the command Enmap. We're not running it right now.
+    client.words.set(wordName, props);
   });
 });
  
