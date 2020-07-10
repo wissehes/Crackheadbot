@@ -5,12 +5,12 @@ exports.run = (client, message, args) => {
 
     const text = args.join(" ")
 
-    if (text.length > 100) {
-        return message.reply("it can't be longer than 100 characters idot")
+    if (text.length > 150) {
+        return message.reply("it can't be longer than 150 characters idot")
     } else if (text.length < 10) {
         return message.reply("it can't be shorted than 10 characters idot")
-    } else if (message.author.tag.length > 20) {
-        return message.reply(`Sorry, your tag (${message.author.tag}) is too long!`)
+    } else if (message.author.tag.length > 35) {
+        return message.reply(`Sorry, your tag (${message.author.tag}) is too long! It can only be 35 characters`)
     }
     client.tweetCooldown.add(message.author.id)
     setTimeout(() => {
