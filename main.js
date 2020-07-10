@@ -8,6 +8,7 @@ const client = new Discord.Client();
 const fs = require("fs");
 client.config = config;
 
+client.tweetCooldown = new Set()
 
 t = new Twit({
     consumer_key: config.twitterConsumer,
