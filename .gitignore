@@ -104,3 +104,5 @@ dist
 .tern-port
 config.json
 twitchbot/
+data/emoji.json
+data/findEmoji.js

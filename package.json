@@ -15,10 +15,10 @@
   "author": "thechicken",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.5.1",
-    "enmap": "^5.2.3",
+    "discord.js": "^12.2.0",
+    "enmap": "^5.3.1",
     "express": "^4.17.1",
-    "moment": "^2.24.0",
+    "moment": "^2.27.0",
     "twit": "^2.2.11",
     "twitter": "^1.7.1"
   }

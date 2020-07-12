@@ -73,7 +73,7 @@ app.use(express.json());
 
 app.get('/', function(req, res) {
     res.send('todo api works');
-    client.channels.get(config.twitterChannelID).send(req.query.message)
+    client.channels.resolve(config.twitterChannelID).send(req.query.message)
 });
 app.post('/twitch', function(req, res) {
     //res.send('uwu');
@@ -111,7 +111,7 @@ app.post('/twitch', function(req, res) {
             }
         ]
     };
-    client.channels.get('637042053259198478').send({ embed })
+    client.channels.resolve('637042053259198478').send({ embed })
         .catch(console.log)
         /*.catch((error) => {return res.end(JSON.stringify(error))})*/
     res.end(JSON.stringify(embed))
