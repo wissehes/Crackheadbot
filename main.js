@@ -9,6 +9,7 @@ const fs = require("fs");
 client.config = config;
 
 client.tweetCooldown = new Set()
+client.ttsCooldown = new Set()
 
 t = new Twit({
     consumer_key: config.twitterConsumer,
