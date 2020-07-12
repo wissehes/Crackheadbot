@@ -9,8 +9,8 @@ exports.run = async(client, message, args) => {
 
     if (text.length > 150) {
         return message.reply("it can't be longer than 150 characters idot")
-    } else if (text.length < 10) {
-        return message.reply("it can't be shorted than 10 characters idot")
+    } else if (text.length < 5) {
+        return message.reply("it can't be shorter than 5 characters idot")
     } else if (message.author.tag.length > 35) {
         return message.reply(`Sorry, your tag (${message.author.tag}) is too long! It can only be 35 characters`)
     }
@@ -40,6 +40,15 @@ exports.run = async(client, message, args) => {
                                     message.reply("An error occured???")
                                 }
                             })
+                        }
+                    })
+            }).catch(e => {
+                client.t.post("statuses/update", { status: `${text}\n\n-${message.author.tag}` })
+                    .then(({ err, data, response }) => {
+                        if (!err) {
+                            message.reply(`Yay, it worked! https://twitter.com/CHEnergyTweets/status/${data.id_str}`)
+                        } else {
+                            message.reply("An error occured???")
                         }
                     })
             })
