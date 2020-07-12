@@ -15,6 +15,7 @@
   "author": "thechicken",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
     "discord.js": "^12.2.0",
     "enmap": "^5.3.1",
     "express": "^4.17.1",

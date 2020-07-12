@@ -1,4 +1,6 @@
-exports.run = (client, message, args) => {
+const { get } = require("axios")
+
+exports.run = async(client, message, args) => {
     if (client.tweetCooldown.has(message.author.id)) {
         return message.reply("girl- wait a damn minute.")
     }
@@ -17,11 +19,38 @@ exports.run = (client, message, args) => {
         client.tweetCooldown.delete(message.author.id)
     }, 60000)
 
-    client.t.post("statuses/update", { status: `${text}\n\n-${message.author.tag}` }, function(err, data, response) {
-        if (!err) {
-            message.reply(`Yay, it worked! https://twitter.com/CHEnergyTweets/status/${data.id_str}`)
-        } else {
-            message.reply("An error occured???")
-        }
-    })
+    if (message.attachments.first()) {
+        const picture = await get(message.attachments.first().url, { responseType: 'arraybuffer' })
+
+        client.t.post('media/upload', { media_data: Buffer.from(picture.data).toString('base64') })
+            .then(({ err, data, response }) => {
+                var mediaIdStr = data.media_id_string
+                var altText = `${message.attachments.first().name} by ${message.author.tag}`
+                var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+
+                client.t.post('media/metadata/create', meta_params)
+                    .then(({ err, data, response }) => {
+                        if (!err) {
+                            var params = { status: `${text}\n\n-${message.author.tag}`, media_ids: [mediaIdStr] }
+
+                            client.t.post('statuses/update', params, function(err, data, response) {
+                                if (!err) {
+                                    message.reply(`Yay, it worked! https://twitter.com/CHEnergyTweets/status/${data.id_str}`)
+                                } else {
+                                    message.reply("An error occured???")
+                                }
+                            })
+                        }
+                    })
+            })
+    } else {
+        client.t.post("statuses/update", { status: `${text}\n\n-${message.author.tag}` })
+            .then(({ err, data, response }) => {
+                if (!err) {
+                    message.reply(`Yay, it worked! https://twitter.com/CHEnergyTweets/status/${data.id_str}`)
+                } else {
+                    message.reply("An error occured???")
+                }
+            })
+    }
 }
