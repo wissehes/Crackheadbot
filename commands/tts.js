@@ -1,7 +1,4 @@
 exports.run = async(client, message, args) => {
-    if (message.author.id != "354289971361742848") {
-        return message.reply("GET OUT HOE")
-    }
     if (args.length < 1) {
         message.reply("you need to give me something idiot")
     }
