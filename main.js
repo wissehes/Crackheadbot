@@ -116,7 +116,6 @@ app.post('/twitch', function(req, res) {
     };
     client.channels.resolve('637042053259198478').send({ embed })
         .catch(console.log)
-        /*.catch((error) => {return res.end(JSON.stringify(error))})*/
     res.end(JSON.stringify(embed))
 });
 const server = http.createServer(app);
@@ -124,7 +123,6 @@ const port = 1414;
 server.listen(port);
 
 client.execQueue = (guild, connection, first = false) => {
-    console.log(client.ttsQueue[guild.id])
     if (first) {
         client.dispatchers[guild.id] = connection.play(client.ttsQueue[guild.id][0])
         client.dispatchers[guild.id].once("finish", () => setTimeout(_ => client.execQueue(guild, connection, false), 1000))
