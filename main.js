@@ -134,6 +134,7 @@ client.execQueue = (guild, connection, first = false) => {
         } else {
             connection.disconnect()
             delete client.ttsQueue[guild.id]
+            delete client.dispatchers[guild.id]
         }
     }
 }
