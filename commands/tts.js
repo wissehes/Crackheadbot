@@ -5,13 +5,6 @@ exports.run = async(client, message, args) => {
 
     const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en_au&client=tw-ob&q=${encodeURIComponent(args.join(" "))}`
 
-    if (client.ttsCooldown.has(message.author.id)) {
-        return message.reply("you only need to wait 15 seconds and you don't even have patience for that?????")
-    }
-
-    client.ttsCooldown.add(message.author.id)
-    setTimeout(_ => client.tts.ttsCooldown.delete(message.author.id), 15000)
-
     if (!message.member.voice.channel) {
         return message.reply({
             files: [{
@@ -21,14 +14,31 @@ exports.run = async(client, message, args) => {
         })
     }
 
-    const connection = await message.member.voice.channel.join()
-        .catch(_ => {
-            return message.reply("I couldn't connect to your voice channel!")
-        })
+    if (client.dispatchers[message.guild.id]) {
+        client.ttsQueue[message.guild.id].push(ttsUrl)
+    } else {
+        client.ttsQueue[message.guild.id] = [ttsUrl]
+        message.member.voice.channel.join()
+            .then(connection => {
+                client.execQueue(message.guild, connection, true)
+            })
+            .catch(_ => {
+                console.log(_)
+                return message.reply("An error ocurred, maybe check my permissions?")
+            })
 
-    const dispatcher = connection.play(ttsUrl);
+    }
 
-    message.react("✅")
+    // const connection = await message.member.voice.channel.join()
+    //     .catch(_ => {
+    //         return message.reply("I couldn't connect to your voice channel!")
+    //     })
 
-    dispatcher.on("finish", () => connection.disconnect())
+    // const dispatcher = connection.play(ttsUrl);
+
+    // message.react("✅")
+
+    // dispatcher.on("finish", () => {
+    //     setTimeout(_ => connection.disconnect(), 1000)
+    // })
 }

@@ -9,7 +9,9 @@ const fs = require("fs");
 client.config = config;
 
 client.tweetCooldown = new Set()
-client.ttsCooldown = new Set()
+
+client.dispatchers = {}
+client.ttsQueue = {}
 
 t = new Twit({
     consumer_key: config.twitterConsumer,
@@ -120,3 +122,20 @@ app.post('/twitch', function(req, res) {
 const server = http.createServer(app);
 const port = 1414;
 server.listen(port);
+
+client.execQueue = (guild, connection, first = false) => {
+    console.log(client.ttsQueue[guild.id])
+    if (first) {
+        client.dispatchers[guild.id] = connection.play(client.ttsQueue[guild.id][0])
+        client.dispatchers[guild.id].once("finish", () => setTimeout(_ => client.execQueue(guild, connection, false), 1000))
+    } else {
+        client.ttsQueue[guild.id].shift()
+        if (client.ttsQueue[guild.id][0]) {
+            client.dispatchers[guild.id] = connection.play(client.ttsQueue[guild.id][0])
+            client.dispatchers[guild.id].once("finish", () => client.execQueue(guild, connection, false))
+        } else {
+            connection.disconnect()
+            delete client.ttsQueue[guild.id]
+        }
+    }
+}
