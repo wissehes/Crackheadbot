@@ -1,3 +1,5 @@
+const isMessageBad = require("../functions/isMessageBad")
+const config = require("../config")
 module.exports = (client, message) => {
     if (message.author.bot) {
         return;
@@ -6,6 +8,13 @@ module.exports = (client, message) => {
     if (message.channel.type == 'dm' || message.channel.type == 'group') {
         //message.channels.get().send(`\`${message.author.tag}\` said this:\n\n${message.content}`)
         return message.channel.send({ files: ['./data/no.mp3'] })
+    }
+
+    if (isMessageBad(message, config.badWordsRegex)) {
+        message.reply("you can't say that word!")
+            .then(m => m.delete({ timeout: 2000 }))
+        message.delete().catch(e => console.log(e))
+        return;
     }
 
     const checkCommand = (client, message) => {
@@ -22,8 +31,6 @@ module.exports = (client, message) => {
     }
     const checkWord = (client, message) => {
         const args = message.content.trim().split(/ +/g);
-        const command = args.shift().toLowerCase();
-
         // Grab the command data from the client.commands Enmap
         const cmd = client.words.get(message.content.toLowerCase());
 
