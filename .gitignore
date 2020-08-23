@@ -102,7 +102,10 @@ dist
 
 # TernJS port file
 .tern-port
-config.json
+config.js
 twitchbot/
 data/emoji.json
 data/findEmoji.js
+
+#MACOS
+.DS_Store
