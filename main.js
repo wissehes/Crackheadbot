@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const config = require("./config.json");
+const config = require("./config");
 //const Twitter = require('twitter');
 var Twit = require('twit');
 const Enmap = require("enmap");
@@ -74,11 +74,11 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.send('todo api works');
     client.channels.resolve(config.twitterChannelID).send(req.query.message)
 });
-app.post('/twitch', function(req, res) {
+app.post('/twitch', function (req, res) {
     //res.send('uwu');
     res.type('json')
     if (req.body.password != config.webhookPassword)
@@ -103,15 +103,15 @@ app.post('/twitch', function(req, res) {
             "name": ChannelName + " is now streaming"
         },
         "fields": [{
-                "name": "Playing",
-                "value": Game,
-                "inline": true
-            },
-            {
-                "name": "Started at (streamer timezone)",
-                "value": CreatedAt,
-                "inline": true
-            }
+            "name": "Playing",
+            "value": Game,
+            "inline": true
+        },
+        {
+            "name": "Started at (streamer timezone)",
+            "value": CreatedAt,
+            "inline": true
+        }
         ]
     };
     client.channels.resolve('637042053259198478').send({ embed })
