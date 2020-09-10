@@ -10,12 +10,12 @@ module.exports = (client, message) => {
         return message.channel.send({ files: ['./data/no.mp3'] })
     }
 
-    if (isMessageBad(message, config.badWordsRegex)) {
-        message.reply("you can't say that word!")
-            .then(m => m.delete({ timeout: 2000 }))
-        message.delete().catch(e => console.log(e))
-        return;
-    }
+    // if (isMessageBad(message, config.badWordsRegex)) {
+    //     message.reply("you can't say that word!")
+    //         .then(m => m.delete({ timeout: 2000 }))
+    //     message.delete().catch(e => console.log(e))
+    //     return;
+    // }
 
     const checkCommand = (client, message) => {
         if (message.content.toLowerCase().indexOf(client.config.prefix) !== 0) return;
