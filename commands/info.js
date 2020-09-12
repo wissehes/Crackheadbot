@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 exports.run = (client, message, args) => {
 
-    String.prototype.toHHMMSS = function() {
+    String.prototype.toHHMMSS = function () {
         var sec_num = parseInt(this, 10); // don't forget the second param
         var hours = Math.floor(sec_num / 3600);
         var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
@@ -43,7 +43,7 @@ exports.run = (client, message, args) => {
     var embed = new Discord.MessageEmbed()
         .setTitle("Skeppy Bot Info")
         .setDescription("Here's some info about me")
-        .setURL('https://skeppybot.xyz')
+        .setURL('https://github.com/TheChicken14/Crackheadbot')
         .setThumbnail(client.user.displayAvatarURL())
         .addField(`Server count`, client.guilds.cache.size, true)
         .addField(`System Uptime`, getOsUptime(), true)
