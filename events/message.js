@@ -1,6 +1,8 @@
 const isMessageBad = require("../functions/isMessageBad")
 const config = require("../config")
-module.exports = (client, message) => {
+const Guild = require("../db/models/Guild")
+
+module.exports = async (client, message) => {
     if (message.author.bot) {
         return;
     }
@@ -16,6 +18,7 @@ module.exports = (client, message) => {
     //     return;
     // }
 
+
     const checkCommand = (client, message) => {
         if (message.content.toLowerCase().indexOf(client.config.prefix) !== 0) return;
 
@@ -26,7 +29,25 @@ module.exports = (client, message) => {
 
         if (!cmd) return;
 
-        cmd.run(client, message, args);
+        let settings;
+        try {
+            settings = await Guild.findOne({ id: message.guild.id })
+        } catch (e) {
+            message.channel.send("An error occurred while pulling the database 🙄 i've notified the dev tho")
+            client.users.resolve(config.ownerID).send(`bitch i couldnt pull the settings for the server ${message.guild.name} (id: ${message.guild.id}). pls fix`)
+            try {
+                client.users.resolve(config.ownerID).send(`This is the error:
+                \`\`\`
+                ${e}
+                \`\`\``)
+            } catch (_e) {
+                console.log("couldn't send log:")
+                console.log(e)
+            }
+        }
+        // Only run if settings loaded successfully
+        if (settings)
+            cmd.run(client, message, args, settings);
     }
     const checkWord = (client, message) => {
         const args = message.content.trim().split(/ +/g);
