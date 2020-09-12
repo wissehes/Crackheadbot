@@ -19,7 +19,7 @@ module.exports = async (client, message) => {
     // }
 
 
-    const checkCommand = (client, message) => {
+    const checkCommand = async (client, message) => {
         if (message.content.toLowerCase().indexOf(client.config.prefix) !== 0) return;
 
         const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
