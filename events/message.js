@@ -6,7 +6,6 @@ module.exports = (client, message) => {
     }
 
     if (message.channel.type == 'dm' || message.channel.type == 'group') {
-        //message.channels.get().send(`\`${message.author.tag}\` said this:\n\n${message.content}`)
         return message.channel.send({ files: ['./data/no.mp3'] })
     }
 
@@ -41,5 +40,9 @@ module.exports = (client, message) => {
         cmd.run(client, message, args);
     }
     checkCommand(client, message)
-    checkWord(client, message)
+
+    // Make words only work in Crackhead Energy
+    if (message.guild.id === "637042053259198468") {
+        checkWord(client, message)
+    }
 };
