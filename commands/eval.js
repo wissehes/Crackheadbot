@@ -1,12 +1,12 @@
 const Discord = require('discord.js');
 
 function clean(text) { // For Eval
-    if (typeof(text) === "string")
+    if (typeof (text) === "string")
         return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
     else
         return text;
 }
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, settings) => {
     if (![client.config.ownerID, client.config.adminID].some(a => message.author.id == a)) return;
     try {
         const code = args.join(' ');
