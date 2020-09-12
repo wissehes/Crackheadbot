@@ -6,6 +6,7 @@ const Enmap = require("enmap");
 
 const client = new Discord.Client();
 const fs = require("fs");
+const connectDB = require("./db")
 client.config = config;
 
 client.tweetCooldown = new Set()
@@ -21,6 +22,9 @@ t = new Twit({
 });
 //Bind 't' to 'client'
 client.t = t;
+
+// Connect to database
+connectDB(config.mongouri)
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
