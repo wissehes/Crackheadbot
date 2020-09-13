@@ -1,4 +1,4 @@
-exports.run = async(client, message, args) => {
+exports.run = async (client, message, args) => {
     if (args.length < 1) {
         message.reply("you need to give me something idiot")
     }
@@ -41,4 +41,8 @@ exports.run = async(client, message, args) => {
     // dispatcher.on("finish", () => {
     //     setTimeout(_ => connection.disconnect(), 1000)
     // })
+}
+exports.info = {
+    name: "tts",
+    aliases: ['texttospeech']
 }

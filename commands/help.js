@@ -47,3 +47,8 @@ ${commands.map(c => `\`${c.name}\`: ${c.description}`).join("\n")}
     `)
     message.channel.send(embed)
 }
+
+exports.info = {
+    name: "help",
+    aliases: ['h']
+}

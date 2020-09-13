@@ -27,3 +27,8 @@ exports.run = (client, message, args, settings) => {
         message.channel.send(embed);
     }
 }
+
+exports.info = {
+    name: "eval",
+    aliases: []
+}

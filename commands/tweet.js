@@ -1,6 +1,6 @@
 const { get } = require("axios")
 
-exports.run = async(client, message, args) => {
+exports.run = async (client, message, args) => {
     if (client.tweetCooldown.has(message.author.id)) {
         return message.reply("girl- wait a damn minute.")
     }
@@ -33,7 +33,7 @@ exports.run = async(client, message, args) => {
                         if (!err) {
                             var params = { status: `${text}\n\n-${message.author.tag}`, media_ids: [mediaIdStr] }
 
-                            client.t.post('statuses/update', params, function(err, data, response) {
+                            client.t.post('statuses/update', params, function (err, data, response) {
                                 if (!err) {
                                     message.reply(`Yay, it worked! https://twitter.com/CHEnergyTweets/status/${data.id_str}`)
                                 } else {
@@ -62,4 +62,8 @@ exports.run = async(client, message, args) => {
                 }
             })
     }
+}
+exports.info = {
+    name: "tweet",
+    aliases: []
 }

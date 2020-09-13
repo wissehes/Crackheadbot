@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-    if (message.author.id == "354289971361742848") {
+    if (message.author.id == client.config.ownerID) {
         require('child_process').exec(args.join(" "), (e, sto, ste) => {
             if (e) {
                 message.author.send(e.stack)
@@ -15,4 +15,8 @@ exports.run = (client, message, args) => {
         message.channel.send(`nope`)
     }
 
+}
+exports.info = {
+    name: "cmd",
+    aliases: []
 }

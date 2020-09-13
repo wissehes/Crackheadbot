@@ -1,6 +1,6 @@
 const emojis = require("../data/emojis.js")
 
-exports.run = async(client, message, args) => {
+exports.run = async (client, message, args) => {
     if (args.length < 1) {
         return message.reply("what do i need to emojify idiot")
     }
@@ -11,7 +11,7 @@ exports.run = async(client, message, args) => {
         return word.split("").map(letter => {
             if (letter == " ") return "   "
             const foundEmojis = emojis[letter]
-                // Ignore any characters that arent emojified
+            // Ignore any characters that arent emojified
             if (!foundEmojis || foundEmojis.length < 1) {
                 return letter
             } else {
@@ -25,7 +25,7 @@ exports.run = async(client, message, args) => {
     message.channel.awaitMessages(messageFilter, { max: 1, time: 15000, errors: ['time'] })
         .then(collected => {
             if (collected.first().content.toLowerCase() == "yes") {
-                client.t.post("statuses/update", { status: `${emojifiedText.join("   ")}\n\n-${message.author.tag}` }, function(err, data, response) {
+                client.t.post("statuses/update", { status: `${emojifiedText.join("   ")}\n\n-${message.author.tag}` }, function (err, data, response) {
                     if (!err) {
                         message.reply(`Yay, it worked! https://twitter.com/CHEnergyTweets/status/${data.id_str}`)
                     } else {
@@ -34,9 +34,13 @@ exports.run = async(client, message, args) => {
                 })
             } else {
                 myMessage.delete()
-                collected.first().delete().catch(e => void(e))
+                collected.first().delete().catch(e => void (e))
             }
         }).catch(e => {
             myMessage.delete()
         })
+}
+exports.info = {
+    name: "emojify",
+    aliases: []
 }

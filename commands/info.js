@@ -55,3 +55,7 @@ exports.run = (client, message, args) => {
         .addField(`Memory`, `${formatBytes(os.freemem())}/${formatBytes(os.totalmem())}`, true);
     message.channel.send(embed)
 }
+exports.info = {
+    name: "info",
+    aliases: []
+}

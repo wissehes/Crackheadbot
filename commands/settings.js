@@ -207,3 +207,6 @@ function getCurrentSettingEmbed(currentSetting, client) {
         .addField("📝 Edit:", `\`${client.config.prefix}settings ${currentSetting.id} <${getValidOptions(currentSetting).readable}>\``)
     return embed
 }
+exports.info = {
+    name: "settings",
+}

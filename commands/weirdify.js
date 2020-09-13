@@ -17,7 +17,7 @@ const pickers = [
     oddNumbers
 ]
 
-exports.run = async(client, message, args) => {
+exports.run = async (client, message, args) => {
     if (!args[0]) {
         return message.reply("are u dumb")
     }
@@ -31,4 +31,9 @@ exports.run = async(client, message, args) => {
     const allChars = args.join(" ").split("")
 
     message.channel.send(allChars.map(picker).join(""))
+}
+
+exports.info = {
+    name: "weirdify",
+    aliases: []
 }
