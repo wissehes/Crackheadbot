@@ -6,9 +6,17 @@ const Guild = new mongoose.Schema({
         type: String,
         required: true,
     },
+    joined: {
+        type: Date,
+        default: Date.now
+    },
     memberJoinedMessages: {
         type: Boolean,
         default: false,
+    },
+    memberJoinedMessage: {
+        type: String,
+        default: ""
     },
     memberLeftMessages: {
         type: Boolean,
