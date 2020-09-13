@@ -30,9 +30,11 @@ module.exports = async (client, message) => {
         if (!cmd) return;
 
         let settings;
+        let settingsFailed = false
         try {
             settings = await Guild.findOne({ id: message.guild.id })
         } catch (e) {
+            settingsFailed = true
             message.channel.send("An error occurred while pulling the database 🙄 i've notified the dev tho")
             client.users.resolve(config.ownerID).send(`bitch i couldnt pull the settings for the server ${message.guild.name} (id: ${message.guild.id}). pls fix`)
             try {
@@ -46,7 +48,7 @@ module.exports = async (client, message) => {
             }
         }
         // Only run if settings loaded successfully
-        if (settings)
+        if (!settingsFailed)
             cmd.run(client, message, args, settings);
     }
     const checkWord = (client, message) => {
