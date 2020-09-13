@@ -27,7 +27,7 @@ module.exports = async (client, message) => {
         user.xp++
         const currentLevel = calculateLevel(user.xp)
         if (currentLevel > user.level) {
-            message.reply(`congratulations ${message.member}! You just leveled up to level **${currentLevel}**`)
+            message.channel.send(`Congratulations ${message.member}! You just leveled up to level **${currentLevel}**!`)
         }
         await user.save()
     } else {
