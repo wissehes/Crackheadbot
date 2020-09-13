@@ -3,7 +3,7 @@ const Guild = require("../db/models/Guild")
 exports.run = async (client, message, args, settings) => {
     // Check if user is admin or bot owner. If not, deny access to this command. 
     const isPermitted = (member) => {
-        if (message.member.hasPermission(MANAGE_GUILD) || message.author.id == client.config.ownerID) {
+        if (message.member.hasPermission("MANAGE_GUILD") || message.author.id == client.config.ownerID) {
             return true
         } else return false
     }
