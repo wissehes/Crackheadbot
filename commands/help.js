@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js")
 
-const commands = [{
+const commands = [
+    {
         name: 'cmd',
         description: 'execute commands (only for owner)'
     },
@@ -30,13 +31,17 @@ const commands = [{
     {
         name: 'weirdify',
         description: 'wEiRdIfY tExT lIkE tHiS'
+    },
+    {
+        name: 'settings',
+        description: '⚙️ Change my settings 😼'
     }
 ]
-exports.run = async(client, message, args) => {
-        const embed = new MessageEmbed()
-            .setTitle("Crackhead help!")
-            .setColor("RANDOM")
-            .setDescription(`hi yall my prefix is crack and these are my commands:
+exports.run = async (client, message, args) => {
+    const embed = new MessageEmbed()
+        .setTitle("Crackhead help!")
+        .setColor("RANDOM")
+        .setDescription(`hi yall my prefix is crack and these are my commands:
     
 ${commands.map(c => `\`${c.name}\`: ${c.description}`).join("\n")}
     `)
