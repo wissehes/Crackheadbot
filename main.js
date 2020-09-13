@@ -7,6 +7,8 @@ const Enmap = require("enmap");
 const client = new Discord.Client();
 const fs = require("fs");
 const connectDB = require("./db")
+const Guild = require("./db/models/Guild")
+
 client.config = config;
 
 client.tweetCooldown = new Set()
@@ -69,6 +71,31 @@ fs.readdir("./words/", (err, files) => {
         client.words.set(wordName, props);
     });
 });
+
+// Member add event
+client.on("guildMemberAdd", async (member) => {
+    const settings = await Guild.findOne({ id: member.guild.id })
+    if (settings.memberJoinedMessages) {
+        try {
+            const channel = client.channels.resolve(settings.memberJoinedChannel)
+            if (channel) {
+                try {
+                    const embed = new Discord.MessageEmbed()
+                        .setTitle(`New member joined!`)
+                        .setDescription(`${member} joined!`)
+                        .setColor("RANDOM")
+                        .setThumbnail(member.user.displayAvatarURL())
+                        .addField(`Welcome!`, settings.memberJoinedMessage)
+                    channel.send(embed)
+                } catch (e) {
+                    console.error(`Couldn't send welcome message to ${channel.name} in ${guild.name}`)
+                }
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }
+})
 
 client.login(config.token);
 
