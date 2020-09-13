@@ -7,7 +7,7 @@ exports.run = async (client, message, args, settings) => {
         type: "delete"
     })
     if (snipes.length > 5) {
-        snipes.splice(10, snipes.length - 1)
+        snipes.splice(5, snipes.length - 1)
     }
     if (snipes.length) {
         const embed = new MessageEmbed()
