@@ -53,6 +53,13 @@ fs.readdir("./commands/", (err, files) => {
         console.log(`[COMMANDS] Attempting to load command ${commandName}`);
         // Here we simply store the whole thing in the command Enmap. We're not running it right now.
         client.commands.set(commandName, props);
+        // Save the command alias(es) to the collection
+        if (props.info && props.info.aliases && props.info.aliases.length) {
+            props.info.aliases.forEach(aliasName => {
+                client.commands.set(aliasName, props)
+                console.log(`[ALIASES] Attempting to load alias ${aliasName}`);
+            })
+        }
     });
 });
 
