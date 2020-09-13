@@ -1,7 +1,8 @@
 const isMessageBad = require("../functions/isMessageBad")
 const config = require("../config")
 const Guild = require("../db/models/Guild")
-
+const XP = require("../db/models/XP")
+const { calculateLevel } = require("../db/functions")
 module.exports = async (client, message) => {
     if (message.author.bot) {
         return;
@@ -17,7 +18,23 @@ module.exports = async (client, message) => {
     //     message.delete().catch(e => console.log(e))
     //     return;
     // }
-
+    const findUserObj = {
+        userID: message.author.id,
+        guildID: message.guild.id
+    }
+    const user = await XP.findOne(findUserObj)
+    if (user) {
+        user.xp++
+        const currentLevel = calculateLevel(user.xp)
+        if (currentLevel > user.level) {
+            message.reply(`congratulations ${message.member}! You just leveled up to level **${currentLevel}**`)
+        }
+        await user.save()
+    } else {
+        findUserObj.xp = 1
+        const newUser = new XP(findUserObj)
+        await newUser.save()
+    }
 
     const checkCommand = async (client, message) => {
         if (message.content.toLowerCase().indexOf(client.config.prefix) !== 0) return;
