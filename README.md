@@ -4,11 +4,11 @@ This is a fun little bot I at first created for a single server, but I am now wo
 
 # Features
 
-[x] Welome and leave messages
-[x] Custom welcome messages
-[x] Fun little commands such as text-to-speech, weirdify and emojify
-[x] TTS queue: when playing text-to-speech you can queue them.
-[ ] Levels and auto role for levels (soon!)
+- [x] Welome and leave messages
+- [x] Custom welcome messages
+- [x] Fun little commands such as text-to-speech, weirdify and emojify
+- [x] TTS queue: when playing text-to-speech you can queue them.
+- [ ] Levels and auto role for levels (soon!)
 
 # Installation
 
