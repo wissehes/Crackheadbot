@@ -1,6 +1,12 @@
 const { MessageEmbed } = require("discord.js")
 const Guild = require("../db/models/Guild")
 exports.run = async (client, message, args, settings) => {
+    // Check if user is admin or bot owner. If not, deny access to this command. 
+    const isPermitted = (member) => {
+        if (message.member.hasPermission(MANAGE_GUILD) || message.author.id == client.config.ownerID) {
+            return true
+        } else return false
+    }
     const settingsOverview = [
         {
             title: "👥 Welcome messages",
@@ -97,6 +103,9 @@ exports.run = async (client, message, args, settings) => {
     if (!args.length) {
         message.channel.send(overview());
     } else if (settingsArray.indexOf(args[0].toLowerCase()) !== -1) {
+        if (!isPermitted(message.member)) {
+            return message.channel.send("🔐 **You need the `Manage Server` permission to use this command!**")
+        }
         const currentSetting = settingsOverview.find(s => s.id == args[0].toLowerCase())
         const validOptions = getValidOptions(currentSetting)
 
