@@ -33,6 +33,10 @@ const commands = [
         description: 'wEiRdIfY tExT lIkE tHiS'
     },
     {
+        name: 'xp',
+        description: 'See yours or others\' xp'
+    },
+    {
         name: 'settings',
         description: '⚙️ Change my settings 😼'
     }
