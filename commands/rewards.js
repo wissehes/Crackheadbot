@@ -21,10 +21,11 @@ exports.run = async (client, message, args, settings) => {
         return message.channel.send(`👁👄👁 this command requires levels to be turned on`)
     }
     if (!isPermittedToGiveRole(message)) {
-        return message.channel.send("🙄 I don't have the permission to manage roles...")
+        const allRewards = await generateOverViewEmbed(message, true)
+        return message.channel.send(allRewards)
     }
     if (!isPermitted(message)) {
-        return message.channel.send("🔐 **You need the `Administrator` permission to use this command!**")
+        return message.channel.send("")
     }
 
     const option = await askOption(message)
@@ -165,7 +166,7 @@ function askReward(message, prompt) {
     })
 }
 
-async function generateOverViewEmbed(message) {
+async function generateOverViewEmbed(message, showPermRequired) {
     const rewards = await Reward.find({
         guildID: message.guild.id
     })
@@ -180,6 +181,9 @@ async function generateOverViewEmbed(message) {
         .setTitle("Rewards list")
         .setColor("RANDOM")
         .setDescription(mappedRewards.join("\n"))
+    if (showPermRequired) {
+        embed.setFooter("You need the Administrator permission to add/remove rewards!")
+    }
 
     return embed;
 }
