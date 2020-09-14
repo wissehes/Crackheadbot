@@ -18,6 +18,8 @@ module.exports = async (client, message) => {
     //     message.delete().catch(e => console.log(e))
     //     return;
     // }
+    let settings;
+
     const findUserObj = {
         userID: message.author.id,
         guildID: message.guild.id
@@ -27,7 +29,10 @@ module.exports = async (client, message) => {
         user.xp++
         const currentLevel = calculateLevel(user.xp)
         if (currentLevel > user.level) {
-            message.channel.send(`Congratulations ${message.member}! You just leveled up to level **${currentLevel}**!`)
+            settings = await Guild.findOne({ id: message.guild.id })
+            if (settings.levels) {
+                message.channel.send(`Congratulations ${message.member}! You just leveled up to level **${currentLevel}**!`)
+            }
         }
         await user.save()
     } else {
@@ -46,22 +51,23 @@ module.exports = async (client, message) => {
 
         if (!cmd) return;
 
-        let settings;
         let settingsFailed = false
-        try {
-            settings = await Guild.findOne({ id: message.guild.id })
-        } catch (e) {
-            settingsFailed = true
-            message.channel.send("An error occurred while pulling the database 🙄 i've notified the dev tho")
-            client.users.resolve(config.ownerID).send(`bitch i couldnt pull the settings for the server ${message.guild.name} (id: ${message.guild.id}). pls fix`)
+        if (!settings) {
             try {
-                client.users.resolve(config.ownerID).send(`This is the error:
+                settings = await Guild.findOne({ id: message.guild.id })
+            } catch (e) {
+                settingsFailed = true
+                message.channel.send("An error occurred while pulling the database 🙄 i've notified the dev tho")
+                client.users.resolve(config.ownerID).send(`bitch i couldnt pull the settings for the server ${message.guild.name} (id: ${message.guild.id}). pls fix`)
+                try {
+                    client.users.resolve(config.ownerID).send(`This is the error:
                 \`\`\`
                 ${e}
                 \`\`\``)
-            } catch (_e) {
-                console.log("couldn't send log:")
-                console.log(e)
+                } catch (_e) {
+                    console.log("couldn't send log:")
+                    console.log(e)
+                }
             }
         }
         // Only run if settings loaded successfully
