@@ -21,11 +21,11 @@ exports.run = async (client, message, args, settings) => {
         return message.channel.send(`👁👄👁 this command requires levels to be turned on`)
     }
     if (!isPermittedToGiveRole(message)) {
-        const allRewards = await generateOverViewEmbed(message, true)
-        return message.channel.send(allRewards)
+        return message.channel.send("You do know i need to have the permission to manage roles right?")
     }
     if (!isPermitted(message)) {
-        return message.channel.send("")
+        const allRewards = await generateOverViewEmbed(message, true)
+        return message.channel.send(allRewards)
     }
 
     const option = await askOption(message)
