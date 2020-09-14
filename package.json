@@ -4,15 +4,23 @@
   "description": "a discord bot for the crackhead gaming server uwu",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node . "
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheChicken14/Crackheadbot"
   },
   "keywords": [
     "crackhead",
     "discord",
     "bot",
-    "gaming"
+    "gaming",
+    "xp"
   ],
-  "author": "thechicken",
+  "author": "TheChicken14/Wisse Hes",
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
