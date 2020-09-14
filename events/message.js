@@ -51,7 +51,6 @@ module.exports = async (client, message) => {
     // of course, and if they dont already have it
     if (user) {
         rewards.forEach(reward => {
-            console.log(user)
             if (user.level >= reward.level) {
                 const role = message.guild.roles.resolve(reward.roleID)
 
