@@ -74,7 +74,7 @@ exports.run = async (client, message, args, settings) => {
             id: "levels",
             description: "Toggles levels.",
             current: settings.levels,
-            currentType: "channel",
+            currentType: "boolean",
             save: async (value) => {
                 settings.levels = value
                 await settings.save()
