@@ -2,6 +2,7 @@ const isMessageBad = require("../functions/isMessageBad")
 const config = require("../config")
 const Guild = require("../db/models/Guild")
 const XP = require("../db/models/XP")
+const Reward = require("../db/models/Reward")
 const { calculateLevel } = require("../db/functions")
 module.exports = async (client, message) => {
     if (message.author.bot) {
@@ -20,6 +21,7 @@ module.exports = async (client, message) => {
     // }
     let settings;
 
+    // Update XP
     const findUserObj = {
         userID: message.author.id,
         guildID: message.guild.id
@@ -40,6 +42,22 @@ module.exports = async (client, message) => {
         const newUser = new XP(findUserObj)
         await newUser.save()
     }
+
+    // Check for rewards
+    const rewards = await Reward.find({
+        guildID: message.guild.id
+    })
+    // For each reward, give it to the user if they deserve it 
+    // of course, and if they dont already have it
+    rewards.forEach(reward => {
+        const role = message.guild.roles.resolve(reward.roleID)
+
+        if (!role) return;
+
+        if (!message.member.roles.cache.find(r => r.id == role.id)) {
+            message.member.roles.add(role.id)
+        }
+    })
 
     const checkCommand = async (client, message) => {
         if (message.content.toLowerCase().indexOf(client.config.prefix) !== 0) return;
