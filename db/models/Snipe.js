@@ -19,12 +19,10 @@ const Snipe = new mongoose.Schema({
     },
     date: {
         type: Date,
-        default: Date.now
-    },
-    expireAt: {
-        type: Date,
-        //default: Date.now,
-        expires: '1h'
+        default: Date.now,
+        index: {
+            expires: '1h'
+        }
     },
 });
 
