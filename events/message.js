@@ -49,15 +49,26 @@ module.exports = async (client, message) => {
     })
     // For each reward, give it to the user if they deserve it 
     // of course, and if they dont already have it
-    rewards.forEach(reward => {
-        const role = message.guild.roles.resolve(reward.roleID)
+    if (user) {
+        rewards.forEach(reward => {
+            console.log(user)
+            if (user.level >= reward.level) {
+                console.log("user has levl")
 
-        if (!role) return;
+                const role = message.guild.roles.resolve(reward.roleID)
 
-        if (!message.member.roles.cache.find(r => r.id == role.id)) {
-            message.member.roles.add(role.id)
-        }
-    })
+                if (!role) return;
+
+                if (!message.member.roles.cache.find(r => r.id == role.id)) {
+                    message.member.roles.add(role.id)
+                        .catch(err => {
+                            console.error(`Couldn't give ${message.author.tag} role ${role.name} in ${message.guild.name}`)
+                            console.error(err)
+                        })
+                }
+            }
+        })
+    }
 
     const checkCommand = async (client, message) => {
         if (message.content.toLowerCase().indexOf(client.config.prefix) !== 0) return;
