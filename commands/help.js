@@ -39,6 +39,10 @@ const commands = [
     {
         name: 'settings',
         description: '⚙️ Change my settings 😼'
+    },
+    {
+        name: 'snipe',
+        description: 'See the last deleted/edited messages 💀'
     }
 ]
 exports.run = async (client, message, args) => {
