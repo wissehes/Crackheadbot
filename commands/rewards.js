@@ -20,11 +20,11 @@ exports.run = async (client, message, args, settings) => {
     if (!settings.levels) {
         return message.channel.send(`👁👄👁 this command requires levels to be turned on`)
     }
-    if (!isPermitted(message)) {
-        return message.channel.send("🔐 **You need the `Administrator` permission to use this command!**")
-    }
     if (!isPermittedToGiveRole(message)) {
         return message.channel.send("🙄 I don't have the permission to manage roles...")
+    }
+    if (!isPermitted(message)) {
+        return message.channel.send("🔐 **You need the `Administrator` permission to use this command!**")
     }
 
     const option = await askOption(message)
