@@ -3,9 +3,9 @@ const { MessageEmbed } = require("discord.js")
 const Moment = require('moment');
 
 exports.run = async (client, message, args, settings) => {
+    const channel = message.mentions.channels.first() || message.channel
     const snipes = await Snipe.find({
-        channelID: message.channel.id,
-        type: "delete"
+        channelID: channel.id,
     })
 
     if (snipes.length) {
@@ -16,13 +16,13 @@ exports.run = async (client, message, args, settings) => {
         }
         const embed = new MessageEmbed()
             .setTitle("Available snipes")
-            .setAuthor(`#${message.channel.name}`)
+            .setAuthor(`#${channel.name}`)
             .setColor("RANDOM")
         sortedSnipes.forEach((snipe, i) => {
             const members = message.guild.members.resolve(snipe.userID)
             const moment = new Moment(snipe.date)
             const fromNow = moment.fromNow()
-            embed.addField(`\`#${i + 1}\` ${members.nickname || members.user.tag} ${fromNow}:`, snipe.message)
+            embed.addField(`\`#${i + 1}\` (${snipe.type}) ${members.nickname || members.user.tag} ${fromNow}:`, snipe.message)
         })
         message.channel.send(embed)
     } else {
