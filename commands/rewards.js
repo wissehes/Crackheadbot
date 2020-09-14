@@ -81,13 +81,19 @@ exports.run = async (client, message, args, settings) => {
                     .setDescription("An error occurred while trying to remove your reward 🙄\n\n i'm sorry for this, pls try again in a few minutes x")
                 message.channel.send(errEmbed)
             })
+    } else if (option === "view") {
+        const allRewards = await generateOverViewEmbed(message)
+        message.channel.send(allRewards)
     }
 }
 
 function askOption(message) {
-    const filter = m => m.author.id === message.author.id && (m.content.toLowerCase() == "add" || m.content.toLowerCase() == "remove");
+    const filter = m => m.author.id === message.author.id &&
+        (m.content.toLowerCase() == "add" ||
+            m.content.toLowerCase() == "remove" ||
+            m.content.toLowerCase() == "view");
     return new Promise(async (resolve) => {
-        await message.channel.send("What do you want to do? (add/remove)")
+        await message.channel.send("What do you want to do? (add/remove/view)")
 
         message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
             .then(collected => {
@@ -157,6 +163,25 @@ function askReward(message, prompt) {
             })
             .catch(_ => resolve(false));
     })
+}
+
+async function generateOverViewEmbed(message) {
+    const rewards = await Reward.find({
+        guildID: message.guild.id
+    })
+    if (!rewards[0]) {
+        return "There are no rewards set up yet!"
+    }
+    const mappedRewards = rewards.map((reward, i) => {
+        const role = displayRole(message, reward.roleID)
+        return `#\`${i + 1}\`: **level**: ${reward.level}, **role**: ${role}`
+    })
+    const embed = new MessageEmbed()
+        .setTitle("Rewards list")
+        .setColor("RANDOM")
+        .setDescription(mappedRewards.join("\n"))
+
+    return embed;
 }
 
 function generateEmbed({
