@@ -8,7 +8,7 @@ exports.run = async (client, message, args, settings) => {
     const serverXP = await XP.find({
         guildID: message.guild.id
     })
-    const sortedXP = serverXP.sort((a, b) => b.xp - a.xp)
+    const sortedXP = serverXP.filter(u => message.guild.members.resolve(u.userID)).sort((a, b) => b.xp - a.xp)
 
     if (sortedXP.length > 10) {
         sortedXP.splice(10, sortedXP.length - 1)
@@ -20,8 +20,8 @@ exports.run = async (client, message, args, settings) => {
         .setColor("RANDOM")
 
     sortedXP.forEach((x, i) => {
-        const doesMemberExist = message.guild.members.resolve(x.userID)
-        const member = doesMemberExist ? doesMemberExist.user.tag : `**unknown user** (user id: ${x.userID})`
+        const member = message.guild.members.resolve(x.userID).user.tag
+
         embed.addField(`${emoji(i + 1)} ${i + 1}. ${member}`, `Level ${x.level} - ${x.xp} xp`)
     })
     message.channel.send(embed)
