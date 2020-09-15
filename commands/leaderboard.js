@@ -24,6 +24,9 @@ exports.run = async (client, message, args, settings) => {
 
         embed.addField(`${emoji(i + 1)} ${i + 1}. ${member}`, `Level ${x.level} - ${x.xp} xp`)
     })
+
+    let topMember = message.guild.members.resolve(sortedXP[0].userID).user.tag
+    embed.setFooter(`Congratulations ${topMember}!!!!`)
     message.channel.send(embed)
 }
 
