@@ -8,7 +8,7 @@ exports.run = async (client, message, args, settings) => {
     const serverXP = await XP.find({
         guildID: message.guild.id
     })
-    const sortedXP = serverXP.sort((a, b) => a.xp + b.xp)
+    const sortedXP = serverXP.sort((a, b) => b.xp - a.xp)
 
     if (sortedXP.length > 10) {
         sortedXP.splice(10, sortedXP.length - 1)
