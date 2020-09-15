@@ -16,13 +16,28 @@ exports.run = async (client, message, args, settings) => {
 
     const embed = new MessageEmbed()
         .setTitle(`${message.guild.name} leaderboard`)
-        .setDescription("This is the top 10 of most xp in this server")
+        .setDescription("This is the top 10 of people with the most xp yall 😳")
         .setColor("RANDOM")
 
     sortedXP.forEach((x, i) => {
         const doesMemberExist = message.guild.members.resolve(x.userID)
         const member = doesMemberExist ? doesMemberExist.user.tag : `**unknown** (user id: ${x.userID})`
-        embed.addField(`${i + 1}. ${member}`, `Level ${x.level} - ${x.xp} xp`)
+        embed.addField(`${emoji(i + 1)} ${i + 1}. ${member}`, `Level ${x.level} - ${x.xp} xp`)
     })
     message.channel.send(embed)
+}
+
+function emoji(place) {
+    /**
+     * this function returns a 🏆 if somoeone is first and 🥈 when second and so on
+     */
+    let emojis = {
+        1: "🏆",
+        2: "🥈",
+        3: "🏅",
+        else: "🎖"
+    }
+    if (emojis[place]) {
+        return emojis[place]
+    } else return emojis.else;
 }
