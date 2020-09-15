@@ -88,6 +88,14 @@ exports.run = async (client, message, args, settings) => {
     }
 }
 
+exports.info = {
+    name: "rewards",
+    aliases: [
+        "autorole",
+        "reward"
+    ]
+}
+
 function askOption(message) {
     const filter = m => m.author.id === message.author.id &&
         (m.content.toLowerCase() == "add" ||
