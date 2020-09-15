@@ -41,6 +41,14 @@ const commands = [
         description: '⚙️ Change my settings 😼'
     },
     {
+        name: "rewards",
+        description: "🎁 Set up level rewards"
+    },
+    {
+        name: "leaderboard",
+        description: "See the leaderboard of people with most xp"
+    },
+    {
         name: 'snipe',
         description: 'See the last deleted/edited messages 💀'
     }
