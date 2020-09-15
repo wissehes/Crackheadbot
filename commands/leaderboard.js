@@ -21,7 +21,7 @@ exports.run = async (client, message, args, settings) => {
 
     sortedXP.forEach((x, i) => {
         const doesMemberExist = message.guild.members.resolve(x.userID)
-        const member = doesMemberExist ? doesMemberExist.user.tag : `**unknown** (user id: ${x.userID})`
+        const member = doesMemberExist ? doesMemberExist.user.tag : `**unknown user** (user id: ${x.userID})`
         embed.addField(`${emoji(i + 1)} ${i + 1}. ${member}`, `Level ${x.level} - ${x.xp} xp`)
     })
     message.channel.send(embed)
