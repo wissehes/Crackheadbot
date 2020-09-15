@@ -23,7 +23,7 @@ exports.run = async (client, message, args, settings) => {
             const currentXP = userXP.xp - calculateXPForLevel(userXP.level)
             const rank = await XP.getRank(userXP)
             if (message.guild.me.hasPermission("ATTACH_FILES")) {
-                level = await canvacord.rank({
+                image = await canvacord.rank({
                     username: member.user.username,
                     discrim: member.user.discriminator,
                     level: userXP.level,
@@ -33,7 +33,7 @@ exports.run = async (client, message, args, settings) => {
                     avatarURL: member.user.displayAvatarURL({ format: "png" }),
                     color: "white",
                 });
-                levelImage = new MessageAttachment(image, "rank.png");
+                level = new MessageAttachment(image, "rank.png");
             } else {
                 level = new MessageEmbed()
                     .setColor("RANDOM")
