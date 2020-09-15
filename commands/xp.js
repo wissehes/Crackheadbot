@@ -1,5 +1,15 @@
-const { MessageEmbed } = require("discord.js")
+const {
+    MessageAttachment,
+    MessageEmbed
+} = require("discord.js")
+
 const XP = require("../db/models/XP")
+const canvacord = require("canvacord");
+
+const {
+    calculateNeededXP,
+    calculateXPForLevel
+} = require("../functions/rankFunctions")
 
 exports.run = async (client, message, args, settings) => {
     const pointsEmbed = async (member) => {
@@ -7,19 +17,41 @@ exports.run = async (client, message, args, settings) => {
             userID: member.id,
             guildID: message.guild.id
         })
-        let embed;
+        let level;
         if (userXP) {
-            embed = new MessageEmbed()
-                .setColor("RANDOM")
-                .setTitle(`${member.nickname || member.user.username}'s XP`)
-                .setDescription(`
-**XP**: ${userXP.xp}
+            const neededXP = calculateNeededXP(userXP.xp)
+            const currentXP = userXP.xp - calculateXPForLevel(userXP.level)
+            const rank = await XP.getRank(userXP)
+            if (message.guild.me.hasPermission("ATTACH_FILES")) {
+                level = await canvacord.rank({
+                    username: member.user.username,
+                    discrim: member.user.discriminator,
+                    level: userXP.level,
+                    rank: rank,
+                    neededXP: neededXP,
+                    currentXP: currentXP,
+                    avatarURL: member.user.displayAvatarURL({ format: "png" }),
+                    color: "white",
+                });
+                levelImage = new MessageAttachment(image, "rank.png");
+            } else {
+                level = new MessageEmbed()
+                    .setColor("RANDOM")
+                    .setTitle(`${member.nickname || member.user.username}'s XP`)
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .setDescription(`
+**Rank**: #${rank}
+**XP**: ${currentXP}
 **Level**: ${userXP.level}
+**XP Required to level up**: ${neededXP}
 `)
+            }
         }
-        return userXP ? embed : `${member.user.tag} doesn't have any xp yet`;
+        return userXP ? level : `${member.user.tag} doesn't have any xp yet`;
     }
 
+    // Display a "<name> is typing..." in discord while generating the image
+    message.channel.startTyping()
 
     if (!args.length) {
         message.channel.send(await pointsEmbed(message.member))
@@ -42,6 +74,10 @@ exports.run = async (client, message, args, settings) => {
             }
         }
     }
+    message.channel.stopTyping()
+
+    // Set a timer so it always stops typing.
+    setTimeout(() => message.channel.stopTyping(), 1000)
 }
 
 exports.info = {
