@@ -84,31 +84,6 @@ fs.readdir("./words/", (err, files) => {
     });
 });
 
-// Member add event
-client.on("guildMemberAdd", async (member) => {
-    const settings = await Guild.findOne({ id: member.guild.id })
-    if (settings.memberJoinedMessages) {
-        try {
-            const channel = client.channels.resolve(settings.memberJoinedChannel)
-            if (channel) {
-                try {
-                    const embed = new Discord.MessageEmbed()
-                        .setTitle(`New member joined!`)
-                        .setDescription(`${member} joined!`)
-                        .setColor("RANDOM")
-                        .setThumbnail(member.user.displayAvatarURL())
-                        .addField(`Welcome!`, settings.memberJoinedMessage)
-                    channel.send(embed)
-                } catch (e) {
-                    console.error(`Couldn't send welcome message to ${channel.name} in ${guild.name}`)
-                }
-            }
-        } catch (e) {
-            console.error(e)
-        }
-    }
-})
-
 client.login(config.token);
 
 client.execQueue = (guild, connection, first = false) => {
