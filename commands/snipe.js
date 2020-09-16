@@ -26,7 +26,7 @@ exports.run = async (client, message, args, settings) => {
         })
         message.channel.send(embed)
     } else {
-        message.channel.send("There's nothing to snipe!")
+        message.channel.send("yall- theres nothing left")
     }
 }
 exports.info = {
