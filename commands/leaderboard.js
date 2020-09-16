@@ -3,7 +3,7 @@ const XP = require("../db/models/XP")
 
 exports.run = async (client, message, args, settings) => {
     if (!settings.levels) {
-        return message.channels.send("💀 Levels are disabled-")
+        return message.channel.send("💀 Levels are disabled-")
     }
     const serverXP = await XP.find({
         guildID: message.guild.id
