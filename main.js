@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const config = require("./config");
-//const Twitter = require('twitter');
+
 var Twit = require('twit');
 const Enmap = require("enmap");
 
@@ -8,6 +8,11 @@ const client = new Discord.Client();
 const fs = require("fs");
 const connectDB = require("./db")
 const Guild = require("./db/models/Guild")
+
+const express = require("express")
+const session = require("express-session")
+
+const app = express()
 
 client.config = config;
 
@@ -122,3 +127,30 @@ client.execQueue = (guild, connection, first = false) => {
         }
     }
 }
+
+app.use(session({
+    secret: config.web.sessionSecret,
+    resave: false,
+    saveUninitialized: true,
+    expires: 604800000,
+    //cookie: { secure: true },
+    name: 'CrackheadID'
+}));
+
+app.disable('x-powered-by')
+
+// Read routes folder and connect it
+client.on("ready", () => {
+    fs.readdir("./web/routes/", (err, routes) => {
+        if (err) return console.error(err);
+        routes.forEach(r => {
+            if (!r.endsWith(".js")) return;
+
+            console.log(`[WEB] Attempting to load route ${r.split('.js')[0]}`)
+            const route = require(`./web/routes/${r}`)(client)
+            app.use(route.path, route.router)
+        })
+    })
+})
+
+app.listen(config.web.port, () => console.log(`[WEB] App started on port ${config.web.port}`))
