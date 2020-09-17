@@ -41,18 +41,18 @@ exports.run = (client, message, args) => {
     var time = process.uptime();
     var DJSVer = require('../package.json').dependencies["discord.js"].slice('^'.length).trim().split(/ +/g);
     var embed = new Discord.MessageEmbed()
-        .setTitle("Skeppy Bot Info")
+        .setTitle("Crackhead bot info")
         .setDescription("Here's some info about me")
         .setURL('https://github.com/TheChicken14/Crackheadbot')
         .setThumbnail(client.user.displayAvatarURL())
-        .addField(`Server count`, client.guilds.cache.size, true)
+        .addField(`Guild count`, client.guilds.cache.size, true)
         .addField(`System Uptime`, getOsUptime(), true)
         .addField(`Uptime`, (time + "").toHHMMSS(), true)
         .addField(`User count`, client.users.cache.size, true)
-        .addField(`Channels`, client.channels.cache.size, true)
+        .addField(`Channel count`, client.channels.cache.size, true)
         .addField(`Node.JS version`, process.version, true)
         .addField(`Discord.JS version`, DJSVer, true)
-        .addField(`Memory`, `${formatBytes(os.freemem())}/${formatBytes(os.totalmem())}`, true);
+        .addField(`Memory (free/total)`, `${formatBytes(os.freemem())}/${formatBytes(os.totalmem())}`, true);
     message.channel.send(embed)
 }
 exports.info = {
