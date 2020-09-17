@@ -1,3 +1,5 @@
+const { Message } = require("discord.js")
+
 /**
  * This script gets a member from a message
  * @param {Message} message 
