@@ -11,9 +11,11 @@ module.exports = (message, search = "", bot = false) => {
         ? message.guild.members.cache
         : message.guild.members.cache.filter(u => !u.user.bot)
     let user =
+        message.mentions.users.first() ||
         members.find(u => u.user.tag.toLowerCase().includes(search)) ||
         members.find(u => u.nickname ? u.nickname.toLowerCase().includes(search) : false) ||
         members.find(u => u.id == search)
+    console.log(search)
     return user
         ? user
         : false
