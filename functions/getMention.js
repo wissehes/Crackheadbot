@@ -15,7 +15,6 @@ module.exports = (message, search = "", bot = false) => {
         members.find(u => u.user.tag.toLowerCase().includes(search)) ||
         members.find(u => u.nickname ? u.nickname.toLowerCase().includes(search) : false) ||
         members.find(u => u.id == search)
-    console.log(search)
     return user
         ? user
         : false
