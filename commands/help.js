@@ -2,16 +2,12 @@ const { MessageEmbed } = require("discord.js")
 
 const commands = [
     {
-        name: 'cmd',
-        description: 'execute commands (only for owner)'
-    },
-    {
         name: 'emojify',
         description: 'emojify texts with the first letter of the name of the emoji 💀'
     },
     {
-        name: 'eval',
-        description: 'evaluate code (only for owner)'
+        name: 'snipe',
+        description: 'See the last deleted/edited messages 💀'
     },
     {
         name: 'hi',
@@ -37,6 +33,10 @@ const commands = [
         description: 'See yours or others\' xp'
     },
     {
+        name: 'userinfo',
+        description: 'Get info about a user🙋‍♂️'
+    },
+    {
         name: 'settings',
         description: '⚙️ Change my settings 😼'
     },
@@ -49,9 +49,13 @@ const commands = [
         description: "See the leaderboard of people with most xp"
     },
     {
-        name: 'snipe',
-        description: 'See the last deleted/edited messages 💀'
-    }
+        name: 'cmd',
+        description: 'execute commands (only for owner)'
+    },
+    {
+        name: 'eval',
+        description: 'evaluate code (only for owner)'
+    },
 ]
 exports.run = async (client, message, args) => {
     const embed = new MessageEmbed()
