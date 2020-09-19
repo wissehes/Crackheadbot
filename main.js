@@ -35,3 +35,5 @@ client.once('ready', () => {
 });
 
 client.on('error', console.error);
+
+client.login(config.token)
