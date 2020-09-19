@@ -16,6 +16,6 @@ module.exports = (message, search = "", bot = false) => {
         members.find(u => u.nickname ? u.nickname.toLowerCase().includes(search) : false) ||
         members.find(u => u.id == search)
     return user
-        ? user
+        ? message.guild.members.resolve(user.id)
         : false
 }
