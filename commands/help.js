@@ -30,11 +30,15 @@ const commands = [
     },
     {
         name: 'xp',
-        description: 'See yours or others\' xp'
+        description: 'See yours or others\' xp 🥱'
     },
     {
         name: 'userinfo',
         description: 'Get info about a user🙋‍♂️'
+    },
+    {
+        name: 'spotify',
+        description: 'See what someone is listening to 🎶'
     },
     {
         name: 'settings',
