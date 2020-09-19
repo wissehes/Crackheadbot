@@ -9,11 +9,6 @@ const fs = require("fs");
 const connectDB = require("./db")
 const Guild = require("./db/models/Guild")
 
-const express = require("express")
-const session = require("express-session")
-
-const app = express()
-
 client.config = config;
 
 client.tweetCooldown = new Set()
@@ -103,17 +98,6 @@ client.execQueue = (guild, connection, first = false) => {
     }
 }
 
-app.use(session({
-    secret: config.web.sessionSecret,
-    resave: false,
-    saveUninitialized: true,
-    expires: 604800000,
-    //cookie: { secure: true },
-    name: 'CrackheadID'
-}));
-
-app.disable('x-powered-by')
-
 // Read routes folder and connect it
 client.on("ready", () => {
     fs.readdir("./web/routes/", (err, routes) => {
@@ -127,5 +111,3 @@ client.on("ready", () => {
         })
     })
 })
-
-app.listen(config.web.port, () => console.log(`[WEB] App started on port ${config.web.port}`))
