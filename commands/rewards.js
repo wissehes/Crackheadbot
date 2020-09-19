@@ -1,8 +1,8 @@
 const { MessageEmbed } = require("discord.js")
 const Reward = require("../db/models/Reward")
 
-const isPermitted = (message) => {
-    if (message.member.hasPermission("ADMINISTRATOR") || message.author.id == client.config.ownerID) {
+const isPermitted = (message, ownerID) => {
+    if (message.member.hasPermission("ADMINISTRATOR") || message.author.id == ownerID) {
         return true
     } else return false
 }
@@ -23,7 +23,7 @@ exports.run = async (client, message, args, settings) => {
     if (!isPermittedToGiveRole(message)) {
         return message.channel.send("You do know i need to have the permission to manage roles right?")
     }
-    if (!isPermitted(message)) {
+    if (!isPermitted(message, client.config.ownerID)) {
         const allRewards = await generateOverViewEmbed(message, true)
         return message.channel.send(allRewards)
     }
