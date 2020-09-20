@@ -2,6 +2,8 @@
 const config = require("./config")
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
+const connectDB = require("./db/")
+const checkAllGuilds = require("./functions/checkAllGuilds")
 
 // Setup commando client
 const client = new CommandoClient({
@@ -23,6 +25,7 @@ client.registry
     .registerDefaultCommands()
     .registerCommandsIn(path.join(__dirname, 'commands'))
 
+connectDB(config.mongouri)
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
@@ -32,6 +35,8 @@ client.once('ready', () => {
             type: "WATCHING"
         }
     })
+    console.log("Checking all guilds in database")
+    checkAllGuilds(client)
 });
 
 client.on('error', console.error);
