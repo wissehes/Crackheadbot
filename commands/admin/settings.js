@@ -1,6 +1,10 @@
 const { MessageEmbed } = require("discord.js");
 const Command = require("../../classes/BaseCommand");
 
+const {
+    getCurrentValue
+} = require("../../util/settings")
+
 const settingsArray = new Set([
     "welcome",
     "welcomechannel",
@@ -10,45 +14,6 @@ const settingsArray = new Set([
     "levels"
 ])
 
-const allSettings = [
-    {
-        title: "👥 Welcome messages",
-        usage: "{prefix}settings welcome",
-        id: "welcome",
-        description: "Toggles welcome messages.",
-        type: "boolean",
-    }, {
-        title: "👥 Welcome channel",
-        usage: "{prefix}settings welcomechannel",
-        id: "welcomechannel",
-        description: "Sets the channel for welcome messages.",
-        type: "channel",
-    }, {
-        title: "🗨️ Welcome message",
-        usage: "{prefix}settings welcomemessage",
-        id: "welcomemessage",
-        description: "Set custom welcome message.",
-        type: "string",
-    }, {
-        title: "👤 Leave messages",
-        usage: "{prefix}settings leave",
-        id: "leave",
-        description: "Toggle leave messages.",
-        type: "boolean",
-    }, {
-        title: "👤 Leave channel",
-        usage: "{prefix}settings leavechannel",
-        id: "leavechannel",
-        description: "Sets the channel for leave messages.",
-        type: "channel",
-    }, {
-        title: "🏆 Levels",
-        usage: "{prefix}settings levels",
-        id: "levels",
-        description: "Toggles levels.",
-        type: "boolean",
-    }
-]
 
 module.exports = class SettingsCommand extends Command {
     constructor(client) {
@@ -83,7 +48,6 @@ module.exports = class SettingsCommand extends Command {
         });
     }
     async run(message, args) {
-        return message.say("Settings command is not finished yet")
         //const args = message.argString.split(" ")
         const settings = await this.getSettings(message.guild)
         const settingsOverview = this.generateSettingsOverview(settings)
@@ -92,14 +56,25 @@ module.exports = class SettingsCommand extends Command {
             const currentSetting = settingsOverview.find(s => s.id == args.setting)
 
             if (args.value.length) {
-                if (typeof args.value == "string") {
+                const theThings = getCurrentValue(currentSetting, this.client)
+                if (theThings.validate(args.value)) {
+                    const saveAble = theThings.saveAble(args.value)
 
+                    await currentSetting.save(saveAble)
+
+                    const embed = this.getCurrentValueEmbed(currentSetting, message.guild.commandPrefix)
+
+                    message.embed(embed)
+                } else {
+                    const embed = this.getCurrentValueEmbed(currentSetting, message.guild.commandPrefix)
+
+                    message.embed(embed)
                 }
+            } else {
+                const embed = this.getCurrentValueEmbed(currentSetting, message.guild.commandPrefix)
+
+                message.embed(embed)
             }
-
-            const embed = this.getCurrentValueEmbed(currentSetting, message.guild.commandPrefix)
-
-            message.embed(embed)
         } else {
             message.embed(this.overViewEmbed(message, settingsOverview))
         }
@@ -119,34 +94,9 @@ module.exports = class SettingsCommand extends Command {
         const embed = new MessageEmbed()
             .setTitle(currentSetting.title)
             .setDescription(currentSetting.description)
-            .addField("⚙️ Current value:", this.getCurrentValue(currentSetting))
+            .addField("⚙️ Current value:", getCurrentValue(currentSetting).value)
             .addField("📝 Edit:", `\`${prefix}settings ${currentSetting.id} <${currentSetting.valid}>\``)
         return embed
-    }
-
-    getCurrentValue(setting) {
-        let value;
-        switch (setting.currentType) {
-            case "boolean":
-                value = setting.current ? "`on`" : "`off`"
-                break;
-            case "channel":
-                if (setting.current == "") {
-                    value = "`Not set`"
-                } else {
-                    const channel = this.client.channels.resolve(setting.current)
-                    value = channel ? channel : "`Not found`"
-                }
-                break;
-            case "joinMessage":
-                if (setting.current == "") {
-                    value = "`<empty>`"
-                } else {
-                    value = `\`${setting.current}\``
-                }
-                break;
-        }
-        return value;
     }
 
     generateSettingsOverview(settings) {
@@ -159,8 +109,9 @@ module.exports = class SettingsCommand extends Command {
                 current: settings.memberJoinedMessages,
                 currentType: "boolean",
                 valid: "on/off",
-                save: async (value) => {
+                async save(value) {
                     settings.memberJoinedMessages = value
+                    this.current = value
                     await settings.save()
                     return true;
                 }
@@ -172,26 +123,13 @@ module.exports = class SettingsCommand extends Command {
                 current: settings.memberJoinedChannel,
                 currentType: "channel",
                 valid: "#channel",
-                save: async (value) => {
+                async save(value) {
                     settings.memberJoinedChannel = value
+                    this.current = value
                     await settings.save()
                     return true;
                 }
             },
-            //{
-            //     title: "🗨️ Welcome message",
-            //     usage: "{prefix}settings welcomemessage",
-            //     id: "welcomemessage",
-            //     description: "Set custom welcome message.",
-            //     current: settings.memberJoinedMessage,
-            //     currentType: "joinMessage",
-
-            //     save: async (value) => {
-            //         settings.memberJoinedMessage = value
-            //         await settings.save()
-            //         return true;
-            //     }
-            // }, 
             {
                 title: "👤 Leave messages",
                 usage: "{prefix}settings leave",
@@ -200,8 +138,9 @@ module.exports = class SettingsCommand extends Command {
                 current: settings.memberLeftMessages,
                 currentType: "boolean",
                 valid: "on/off",
-                save: async (value) => {
+                async save(value) {
                     settings.memberLeftMessages = value
+                    this.current = value
                     await settings.save()
                     return true;
                 }
@@ -213,8 +152,9 @@ module.exports = class SettingsCommand extends Command {
                 current: settings.memberLeftChannel,
                 currentType: "channel",
                 valid: "#channel",
-                save: async (value) => {
+                async save(value) {
                     settings.memberLeftChannel = value
+                    this.current = value
                     await settings.save()
                     return true;
                 }
@@ -226,8 +166,9 @@ module.exports = class SettingsCommand extends Command {
                 current: settings.levels,
                 currentType: "boolean",
                 valid: "on/off",
-                save: async (value) => {
+                async save(value) {
                     settings.levels = value
+                    this.current = value
                     await settings.save()
                     return true;
                 }
