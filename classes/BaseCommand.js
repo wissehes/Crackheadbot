@@ -8,5 +8,6 @@ class BaseCommand extends Command {
     XP = XP
     Guild = Guild
     Reward = Reward
+    getSettings = async (guild) => await this.Guild.findOne({ id: guild.id })
 }
 module.exports = BaseCommand
