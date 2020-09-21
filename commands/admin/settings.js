@@ -1,29 +1,20 @@
 const { MessageEmbed } = require("discord.js");
 const Command = require("../../classes/BaseCommand");
-
 const {
-    getCurrentValue
+    readableValue
 } = require("../../util/settings")
-
-const settingsArray = new Set([
-    "welcome",
-    "welcomechannel",
-    "welcomemessage",
-    "leave",
-    "leavechannel",
-    "levels"
-])
-
 
 module.exports = class SettingsCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'settings',
-            aliases: [],
+            aliases: ['config'],
             group: 'admin',
             memberName: 'settings',
             description: 'Change my settings 😼',
             userPermissions: ["MANAGE_GUILD"],
+            guildOnly: true,
+            guarded: true,
             args: [
                 {
                     key: "setting",
@@ -31,10 +22,10 @@ module.exports = class SettingsCommand extends Command {
                     type: "string",
                     default: "",
                     validate: s => {
-                        if (settingsArray.has(s)) {
+                        if (this.allSettings.find(aa => aa.id == s)) {
                             return true
                         } else {
-                            return "are u dumb- i asked for a setting to change"
+                            return "are u dumb- i asked for a setting to change/view"
                         }
                     }
                 },
@@ -48,131 +39,143 @@ module.exports = class SettingsCommand extends Command {
         });
     }
     async run(message, args) {
-        //const args = message.argString.split(" ")
         const settings = await this.getSettings(message.guild)
-        const settingsOverview = this.generateSettingsOverview(settings)
 
         if (args.setting.length) {
-            const currentSetting = settingsOverview.find(s => s.id == args.setting)
-
-            if (args.value.length) {
-                const theThings = getCurrentValue(currentSetting, this.client)
-                if (theThings.validate(args.value)) {
-                    const saveAble = theThings.saveAble(args.value)
-
-                    await currentSetting.save(saveAble)
-
-                    const embed = this.getCurrentValueEmbed(currentSetting, message.guild.commandPrefix)
-
-                    message.embed(embed)
-                } else {
-                    const embed = this.getCurrentValueEmbed(currentSetting, message.guild.commandPrefix)
-
-                    message.embed(embed)
+            const foundSetting = this.allSettings.find(s => s.id == args.setting)
+            if (foundSetting) {
+                if (args.value) {
+                    if (foundSetting.validate(args.value)) {
+                        settings[foundSetting.key] = foundSetting.saveAble(args.value)
+                        console.log(settings)
+                        await message.guild.settings.set("settings", settings)
+                    }
                 }
-            } else {
-                const embed = this.getCurrentValueEmbed(currentSetting, message.guild.commandPrefix)
-
-                message.embed(embed)
+                message.embed(this.settingEmbed(message, foundSetting, settings))
+                return;
             }
-        } else {
-            message.embed(this.overViewEmbed(message, settingsOverview))
         }
+        message.embed(this.overviewEmbed(message.guild.commandPrefix))
     }
 
-    overViewEmbed(message, overview) {
+    overviewEmbed(prefix) {
         const embed = new MessageEmbed()
             .setTitle("Crackheadbot settings")
-            .setDescription(`Use the command \`${message.guild.commandPrefix}settings <option>\` to view more info about an option.`);
-        overview.forEach(setting => {
-            embed.addField(setting.title, `\`${setting.usage.replace("{prefix}", message.guild.commandPrefix)}\``, true)
+            .setColor("RANDOM")
+            .setDescription(`Use the command \`${prefix}settings <option>\` to view more info about an option.`);
+        this.allSettings.forEach(setting => {
+            embed.addField(setting.title, `\`${prefix}settings ${setting.id}\``, true)
         })
         return embed;
     }
 
-    getCurrentValueEmbed(currentSetting, prefix) {
+    settingEmbed(message, setting, currentSettings) {
+        const settingValue = currentSettings[setting.key]
+
         const embed = new MessageEmbed()
-            .setTitle(currentSetting.title)
-            .setDescription(currentSetting.description)
-            .addField("⚙️ Current value:", getCurrentValue(currentSetting).value)
-            .addField("📝 Edit:", `\`${prefix}settings ${currentSetting.id} <${currentSetting.valid}>\``)
+            .setTitle(setting.title)
+            .setDescription(setting.description)
+            .addField("⚙️ Current value:", readableValue(message, setting.type.type, settingValue))
+            .addField("📝 Edit:", `\`${message.guild.commandPrefix}settings ${setting.id} <${setting.type.example}>\``)
         return embed
     }
 
-    generateSettingsOverview(settings) {
-        return [
-            {
-                title: "👥 Welcome messages",
-                usage: "{prefix}settings welcome",
-                id: "welcome",
-                description: "Toggles welcome messages.",
-                current: settings.memberJoinedMessages,
-                currentType: "boolean",
-                valid: "on/off",
-                async save(value) {
-                    settings.memberJoinedMessages = value
-                    this.current = value
-                    await settings.save()
-                    return true;
-                }
-            }, {
-                title: "👥 Welcome channel",
-                usage: "{prefix}settings welcomechannel",
-                id: "welcomechannel",
-                description: "Sets the channel for welcome messages.",
-                current: settings.memberJoinedChannel,
-                currentType: "channel",
-                valid: "#channel",
-                async save(value) {
-                    settings.memberJoinedChannel = value
-                    this.current = value
-                    await settings.save()
-                    return true;
-                }
+    allSettings = [
+        {
+            key: "joinMessages",
+            id: "welcome",
+            title: "👥 Welcome messages",
+            description: "Toggle welcome messages.",
+            type: {
+                type: "onoff",
+                example: "on/off"
             },
-            {
-                title: "👤 Leave messages",
-                usage: "{prefix}settings leave",
-                id: "leave",
-                description: "Toggle leave messages.",
-                current: settings.memberLeftMessages,
-                currentType: "boolean",
-                valid: "on/off",
-                async save(value) {
-                    settings.memberLeftMessages = value
-                    this.current = value
-                    await settings.save()
-                    return true;
-                }
-            }, {
-                title: "👤 Leave channel",
-                usage: "{prefix}settings leavechannel",
-                id: "leavechannel",
-                description: "Sets the channel for leave messages.",
-                current: settings.memberLeftChannel,
-                currentType: "channel",
-                valid: "#channel",
-                async save(value) {
-                    settings.memberLeftChannel = value
-                    this.current = value
-                    await settings.save()
-                    return true;
-                }
-            }, {
-                title: "🏆 Levels",
-                usage: "{prefix}settings levels",
-                id: "levels",
-                description: "Toggles levels.",
-                current: settings.levels,
-                currentType: "boolean",
-                valid: "on/off",
-                async save(value) {
-                    settings.levels = value
-                    this.current = value
-                    await settings.save()
-                    return true;
-                }
+            validate(v) {
+                if (v == "on" || v == "off") {
+                    return true
+                } else return false
+            },
+            saveAble(v) {
+                if (v == "on") {
+                    return true
+                } else return false
             }
-        ]
-    }
+        },
+        {
+            key: "leaveMessages",
+            id: "leave",
+            title: "👤 Leave messages",
+            description: "Toggle leave messages.",
+            type: {
+                type: "onoff",
+                example: "on/off"
+            },
+            validate(v) {
+                if (v == "on" || v == "off") {
+                    return true
+                } else return false
+            },
+            saveAble(v) {
+                if (v == "on") {
+                    return true
+                } else return false
+            }
+        },
+        {
+            key: "joinChannel",
+            id: "welcomechannel",
+            title: "👥 Welcome channel",
+            description: "Set the channel for welcome messages.",
+            type: {
+                type: "channel",
+                example: "#channel"
+            },
+            validate(v) {
+                if (typeof v == "object") {
+                    return true
+                } else return false
+            },
+            saveAble(v) {
+                return v.id
+            }
+        },
+        {
+            key: "leaveChannel",
+            id: "leavechannel",
+            title: "👤 Leave channel",
+            description: "Set the channel for leave messages.",
+            type: {
+                type: "channel",
+                example: "#channel"
+            },
+            validate(v) {
+                if (typeof v == "object") {
+                    return true
+                } else return false
+            },
+            saveAble(v) {
+                return v.id
+            }
+        },
+        {
+            key: "levels",
+            id: "levels",
+            title: "🏆 Levels",
+            description: "Turn levels on or off",
+            type: {
+                type: "onoff",
+                example: "on/off"
+            },
+            validate(v) {
+                if (v == "on" || v == "off") {
+                    return true
+                } else return false
+            },
+            saveAble(v) {
+                if (v == "on") {
+                    return true
+                } else return false
+            }
+        },
+    ]
 }
