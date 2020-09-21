@@ -18,7 +18,9 @@ client.registry
     .registerGroups([
         ["xp", "XP commands"],
         ["fun", "Fun commands"],
+        ["info", "Info commands"],
         ["admin", "Admin commands"],
+        ["moderation", "Moderation commands"],
         ["owner", "Owner only commands"]
     ])
     .registerDefaultGroups()
