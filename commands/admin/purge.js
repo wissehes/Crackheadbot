@@ -4,7 +4,7 @@ module.exports = class PurgeCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'purge',
-            aliases: ['deletemessages'],
+            aliases: ['clear', 'clean'],
             group: 'admin',
             memberName: 'purge',
             description: 'Remove multiple messages',
