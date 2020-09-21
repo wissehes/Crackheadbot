@@ -109,3 +109,6 @@ data/findEmoji.js
 
 #MACOS
 .DS_Store
+
+# Sqlite
+settings.sqlite*
