@@ -35,7 +35,7 @@ client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
     client.user.setPresence({
         activity: {
-            name: `you being a crackhead 👀`,
+            name: `you being a crackhead 👀 | ${config.prefix}help`,
             type: "WATCHING"
         }
     })
