@@ -1,14 +1,17 @@
 // Import all things as usual
 const config = require("./config")
-const { CommandoClient, SQLiteProvider } = require('discord.js-commando');
+const { SQLiteProvider } = require('discord.js-commando');
+const CrackheadCommandoClient = require("./classes/CrackheadCommandoClient");
+
 const path = require('path');
 const connectDB = require("./db/")
 const checkAllGuilds = require("./functions/checkAllGuilds")
 
 const sqlite = require('sqlite');
-const sqlite3 = require("sqlite3")
+const sqlite3 = require("sqlite3");
+
 // Setup commando client
-const client = new CommandoClient({
+const client = new CrackheadCommandoClient({
     commandPrefix: config.prefix,
     owner: config.ownerID,
     invite: 'https://discord.gg/4s4QUbQ',
