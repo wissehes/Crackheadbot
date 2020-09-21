@@ -37,6 +37,8 @@
     "moment-timezone": "^0.5.31",
     "mongoose": "^5.10.5",
     "node-fetch": "^2.6.1",
+    "sqlite": "^4.0.14",
+    "sqlite3": "^5.0.0",
     "twit": "^2.2.11"
   }
 }
