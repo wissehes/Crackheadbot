@@ -8,6 +8,22 @@ class BaseCommand extends Command {
     XP = XP
     Guild = Guild
     Reward = Reward
-    getSettings = async (guild) => await this.Guild.findOne({ id: guild.id })
+
+    getSettings = async (guild) => {
+        let settings = guild.settings.get("settings")
+        if (!settings) {
+            await guild.settings.set("settings", {
+                id: guild.id,
+                joined: Date.now(),
+                memberJoinedMessages: false,
+                memberLeftMessages: false,
+                memberJoinedChannel: "",
+                memberLeftChannel: "",
+                levels: false,
+            })
+            settings = guild.settings.get("settings")
+        }
+        return settings;
+    }
 }
 module.exports = BaseCommand
