@@ -1,10 +1,12 @@
 // Import all things as usual
 const config = require("./config")
-const { CommandoClient } = require('discord.js-commando');
+const { CommandoClient, SQLiteProvider } = require('discord.js-commando');
 const path = require('path');
 const connectDB = require("./db/")
 const checkAllGuilds = require("./functions/checkAllGuilds")
 
+const sqlite = require('sqlite');
+const sqlite3 = require("sqlite3")
 // Setup commando client
 const client = new CommandoClient({
     commandPrefix: config.prefix,
@@ -30,6 +32,10 @@ client.registry
     .registerCommandsIn(path.join(__dirname, 'commands'))
 
 connectDB(config.mongouri)
+
+client.setProvider(
+    sqlite.open({ filename: path.join(__dirname, 'settings.sqlite3'), driver: sqlite3.Database }).then(db => new SQLiteProvider(db))
+).catch(console.error);
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
