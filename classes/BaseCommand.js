@@ -13,12 +13,11 @@ class BaseCommand extends Command {
         let settings = guild.settings.get("settings")
         if (!settings) {
             await guild.settings.set("settings", {
-                id: guild.id,
                 joined: Date.now(),
-                memberJoinedMessages: false,
-                memberLeftMessages: false,
-                memberJoinedChannel: "",
-                memberLeftChannel: "",
+                joinMessages: false,
+                leaveMessages: false,
+                joinChannel: "",
+                leaveChannel: "",
                 levels: false,
             })
             settings = guild.settings.get("settings")
