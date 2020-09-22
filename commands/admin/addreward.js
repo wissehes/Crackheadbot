@@ -14,6 +14,7 @@ module.exports = class RewardsCommand extends Command {
             description: '🎁 Add a level reward',
             clientPermissions: ["MANAGE_ROLES"],
             userPermissions: ["MANAGE_ROLES"],
+            examples: ["addreward", "addreward @role 1"],
             args: [
                 {
                     key: "role",

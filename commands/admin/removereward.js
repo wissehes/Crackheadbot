@@ -17,6 +17,7 @@ module.exports = class RewardsCommand extends Command {
             description: '🎁 Remove a level reward',
             clientPermissions: ["MANAGE_ROLES"],
             userPermissions: ["MANAGE_ROLES"],
+            examples: ["removereward", "removereward @role 1"]
         });
     }
     async run(message) {
