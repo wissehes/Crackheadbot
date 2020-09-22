@@ -54,4 +54,9 @@ client.once('ready', () => {
 
 client.on('error', console.error);
 
+client.on('commandError', (cmd, err) => {
+    if (err instanceof FriendlyError)
+        console.error(`Error in command ${cmd.groupID}: ${cmd.memberName} ${err}`);
+});
+
 client.login(config.token)
