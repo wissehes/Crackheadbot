@@ -1,4 +1,5 @@
 const { Role } = require("discord.js");
+const Reward = require("../db/models/Reward");
 
 class CrackheadRewards {
     constructor(client) {
@@ -8,59 +9,57 @@ class CrackheadRewards {
     getAllRewards(guild) {
         return new Promise(async (resolve, reject) => {
             try {
-                const rewards = await guild.settings.get("rewards")
-                resolve(rewards || {})
+                const rewards = await Reward.find({
+                    guildID: guild.id
+                })
+                resolve(rewards)
             } catch (e) {
                 reject(e)
             }
         })
     }
 
-    setAllRewards(guild, rewards) {
+    addGuildReward(guild, role, level) {
+        if (role instanceof Role)
+            role = role.id
+
         return new Promise(async (resolve, reject) => {
             try {
-                await guild.settings.set('rewards', rewards)
-                resolve()
+                if (await Reward.findOne({
+                    guild: guild.id,
+                    role,
+                    level
+                })) {
+                    return resolve(false)
+                }
+
+                const reward = new Reward({
+                    guildID: guild.id,
+                    roleID: role,
+                    level
+                })
+                resolve(await reward.save())
             } catch (e) {
                 reject(e)
             }
         })
     }
 
-    setGuildReward(guild, role, level) {
+    removeGuildReward(guild, role, level) {
         if (role instanceof Role)
             role = role.id
 
         return new Promise(async (resolve, reject) => {
-            const rewards = await this.getAllRewards(guild);
-
-            if (role in rewards) {
-                resolve(false)
-            } else {
-                rewards[role] = level;
-
-                await this.setAllRewards(guild, rewards);
-
+            const reward = await Reward.findOne({
+                guildID: guild.id,
+                role,
+                level
+            })
+            if (reward) {
+                await reward.remove()
                 resolve(true)
-            }
-        })
-    }
-
-    removeGuildReward(guild, role) {
-        if (role instanceof Role)
-            role = role.id
-
-        return new Promise(async (resolve, reject) => {
-            const rewards = await this.getAllRewards(guild);
-
-            if (!role in rewards) {
-                resolve(false)
             } else {
-                delete rewards[role];
-
-                await this.setAllRewards(guild, rewards)
-
-                resolve(true)
+                resolve(false)
             }
         })
     }
