@@ -1,6 +1,22 @@
-const { Role, MessageEmbed } = require("discord.js")
+const { Role, MessageEmbed, Message } = require("discord.js")
+
+/**
+ * 
+ * @param {Message} message Message object
+ * @param {String} roleID Role id
+ */
+function displayRole(message, roleID) {
+    const role = message.guild.roles.resolve(roleID) || "**Not Found**"
+    return role
+}
 
 module.exports = {
+    /**
+     * 
+     * @param {String} type Type of embed
+     * @param {Role} role Embed role (if any)
+     * @param {Number} level Reward level 
+     */
     generateEmbed({
         type = "created" || "removed" || "error",
         role = Role,
@@ -33,5 +49,30 @@ module.exports = {
         }
 
         return embed
-    }
+    },
+    /**
+     * 
+     * @param {Message} message Message object
+     * @param {Array} rewards Rewards array
+     */
+    allRewards(message, rewards = []) {
+        const mappedRewards = rewards.map((reward, i) => {
+            const role = displayRole(message, reward.roleID)
+            return `#\`${i + 1}\`: **level**: ${reward.level}, **role**: ${role}`
+        })
+
+        const embed = new MessageEmbed()
+            .setTitle("Rewards list")
+            .setColor("RANDOM")
+            .setDescription(rewards.length
+                ? mappedRewards.join("\n")
+                : "No rewards set up yet!"
+            )
+
+        return {
+            embed,
+            isEmpty: !!!rewards.length
+        }
+    },
+    displayRole,
 }
