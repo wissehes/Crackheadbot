@@ -1,6 +1,6 @@
 // Import all things as usual
 const config = require("./config")
-const { SQLiteProvider } = require('discord.js-commando');
+const { SQLiteProvider, FriendlyError } = require('discord.js-commando');
 const CrackheadCommandoClient = require("./classes/CrackheadCommandoClient");
 
 const path = require('path');
