@@ -27,8 +27,8 @@ XP.pre("save", function (next) {
     next()
 })
 
-XP.statics.getRank = async function (user) {
-    const allUsers = await this.find({})
+XP.statics.getRank = async function (user, guild) {
+    const allUsers = await this.find({ guildID: guild.id })
 
     const sorted = allUsers.sort((a, b) => b.xp - a.xp)
 
