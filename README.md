@@ -2,6 +2,9 @@
 
 This is a fun little bot I at first created for a single server, but I am now working on making it public for everyone to add to their server.
 
+# Status
+I'm currently recoding the whole bot to use the Discord.js Commando framework. You can see my progress in the [move-to-commando](https://github.com/TheChicken14/Crackheadbot/tree/move-to-commando) branch
+
 # Features
 
 - [x] Welome and leave messages
