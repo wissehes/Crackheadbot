@@ -47,7 +47,7 @@ module.exports = class SettingsCommand extends Command {
                 if (args.value) {
                     if (foundSetting.validate(args.value)) {
                         settings[foundSetting.key] = foundSetting.saveAble(args.value)
-                        console.log(settings)
+
                         await message.guild.settings.set("settings", settings)
                     }
                 }
