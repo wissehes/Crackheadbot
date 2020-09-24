@@ -1,8 +1,7 @@
 const Command = require("../../classes/BaseCommand")
 
 const {
-    MessageAttachment,
-    MessageEmbed
+    MessageAttachment
 } = require("discord.js")
 
 module.exports = class XPCommand extends Command {
