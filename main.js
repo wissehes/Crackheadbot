@@ -40,6 +40,19 @@ client.setProvider(
     sqlite.open({ filename: path.join(__dirname, 'settings.sqlite3'), driver: sqlite3.Database }).then(db => new SQLiteProvider(db))
 ).catch(console.error);
 
+// XP
+client.on("message", message => {
+    if (
+        message.author.bot ||
+        message.channel.type !== "text" ||
+        !message.guild.available
+    ) {
+        return;
+    }
+
+    client.xp.giveUserXP(message.member, message.guild)
+})
+
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
     client.user.setPresence({
