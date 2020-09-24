@@ -1,6 +1,7 @@
-const { User, GuildMember, Guild } = require("discord.js")
+const { User, GuildMember, Guild, MessageEmbed } = require("discord.js")
 const XP = require("../db/models/XP")
-const Reward = require("../db/models/Reward")
+const Reward = require("../db/models/Reward");
+const canvacord = require("canvacord");
 
 class CrackheadXP {
     constructor(client) {
@@ -42,6 +43,12 @@ class CrackheadXP {
         })
     }
 
+    /**
+     * 
+     * @param {GuildMemer} member Member object
+     * @param {Object} userXP XP Object
+     */
+
     checkRewards(member, userXP) {
         const newLevel = this.calculateLevel(userXP.xp)
 
@@ -70,13 +77,8 @@ class CrackheadXP {
      * @param {Guild} guild The guild the user is in
      */
     async getUserXP(user, guild) {
-        if (user instanceof User) {
-            user = user.id
-        } else if (user instanceof GuildMember) {
-            user = user.member.id
-        }
         const foundXP = await XP.findOne({
-            userID: user,
+            userID: user.id || user,
             guildID: guild.id
         })
 
@@ -84,17 +86,78 @@ class CrackheadXP {
             throw new Error("No user found!")
         }
 
-        const returnValue = {
-            level: foundXP.level,
-            xp: foundXP.xp,
-            card: {
-                rank: await XP.getRank(foundXP),
-                neededXP: this.calculateRequiredXP(foundXP.xp)
-            }
-        }
-
-        return returnValue
+        return foundXP
     }
+
+    /**
+     * 
+     * @param {GuildMember} member Member object
+     * @param {Guild} guild Guild object
+     */
+
+    async getXPCard(member, guild) {
+        const userXP = await this.getUserXP(member, guild)
+
+        const cardInfo = await this.getCardData(userXP, member)
+
+        const image = await canvacord.rank({
+            username: member.user.username,
+            discrim: member.user.discriminator,
+            avatarURL: member.user.displayAvatarURL({ format: "png" }),
+            color: "white",
+            ...cardInfo
+        });
+
+        return image
+    }
+    /**
+     * 
+     * @param {GuildMember} member member object
+     * @param {Guild} guild guild object
+     */
+
+    async getXPEmbed(member, guild) {
+        const userXP = await this.getUserXP(member, guild);
+
+        const { neededXP, rank, currentXP } = await this.getCardData(userXP, member)
+
+        const embed = new MessageEmbed()
+            .setColor("RANDOM")
+            .setTitle(`${member.nickname || member.user.username}'s XP`)
+            .setThumbnail(member.user.displayAvatarURL())
+            .setDescription(`
+**Rank**: #${rank}
+**XP**: ${currentXP}
+**Level**: ${userXP.level}
+**XP Required to level up**: ${neededXP}
+`)
+        return embed;
+    }
+
+    /**
+     * 
+     * @param {Object} userXP UserXP object
+     * @param {GuildMember} member member object
+     */
+
+    async getCardData(userXP, member) {
+        const currentXP = userXP.xp - this.calculateXPForLevel(userXP.level)
+        const neededXP = this.calculateRequiredXP(userXP.xp) - currentXP
+        const rank = await XP.getRank(userXP, member.guild);
+
+        return {
+            rank: rank.toString(),
+            level: userXP.level.toString(),
+            rank: rank.toString(),
+            neededXP: neededXP.toString(),
+            currentXP: currentXP.toString(),
+        }
+    }
+
+    /**
+     * 
+     * @param {Number} xp 
+     */
 
     calculateLevel(xp) {
         return Math.floor(0.1 * Math.sqrt(xp))
@@ -121,13 +184,13 @@ class CrackheadXP {
      * Calculates the amount of xp that a level requires.
      * @param {Number} level The current level
      */
-    calculateXPForLevel = (level) => {
+    calculateXPForLevel(level) {
         let xp = 0
         let currentLevel = 0
 
         while (currentLevel != level) {
             xp++
-            currentLevel = calculateLevel(xp)
+            currentLevel = this.calculateLevel(xp)
         }
         return xp;
     }
