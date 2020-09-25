@@ -3,7 +3,7 @@
  * This is used to add and get the snipes.
  */
 
-const { Message } = require("discord.js")
+const { Message, TextChannel } = require("discord.js")
 const Snipe = require("../db/models/Snipe")
 
 class CrackheadSnipes {
@@ -24,23 +24,24 @@ class CrackheadSnipes {
             type
         })
 
-        if (await snipe.validate()) {
+        try {
             await snipe.save()
+        } catch (e) {
+            console.error(e)
+            void (0)
         }
     }
 
     /**
      * 
-     * @param {Guild} guild The guild object
+     * @param {TextChannel} channel The channel object
      */
-    async getSnipes(guild) {
+    async getSnipes(channel) {
         const allSnipes = await Snipe.find({
-            guildID: guild.id
+            channelID: channel.id
         })
 
-        if (allSnipes.length) {
-            return allSnipes
-        } else return []
+        return allSnipes
     }
 }
 
