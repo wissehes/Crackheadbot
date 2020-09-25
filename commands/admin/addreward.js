@@ -15,6 +15,7 @@ module.exports = class RewardsCommand extends Command {
             clientPermissions: ["MANAGE_ROLES"],
             userPermissions: ["MANAGE_ROLES"],
             examples: ["addreward", "addreward @role 1"],
+            guildOnly: true,
             args: [
                 {
                     key: "role",
