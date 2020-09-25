@@ -27,7 +27,6 @@ class CrackheadSnipes {
         try {
             await snipe.save()
         } catch (e) {
-            console.error(e)
             void (0)
         }
     }
