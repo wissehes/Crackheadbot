@@ -1,5 +1,6 @@
 const { CommandoClient, CommandoClientOptions } = require("discord.js-commando");
 const CrackheadRewards = require("./CrackheadRewards");
+const CrackheadSnipes = require("./CrackheadSnipes");
 const CrackheadXP = require("./CrackheadXP")
 
 class CrackheadCommandoClient extends CommandoClient {
@@ -8,6 +9,7 @@ class CrackheadCommandoClient extends CommandoClient {
 
         this.rewards = new CrackheadRewards()
         this.xp = new CrackheadXP(this)
+        this.snipes = new CrackheadSnipes(this)
     }
 }
 
