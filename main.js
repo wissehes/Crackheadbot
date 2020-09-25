@@ -1,131 +1,83 @@
-const Discord = require("discord.js");
-const config = require("./config");
+// Import all things as usual
+const config = require("./config")
+const { SQLiteProvider, FriendlyError } = require('discord.js-commando');
+const CrackheadCommandoClient = require("./classes/CrackheadCommandoClient");
 
-var Twit = require('twit');
-const Enmap = require("enmap");
+const path = require('path');
+const connectDB = require("./db/")
+const checkAllGuilds = require("./functions/checkAllGuilds")
 
-const client = new Discord.Client();
-const fs = require("fs");
-const connectDB = require("./db")
-const Guild = require("./db/models/Guild")
+const sqlite = require('sqlite');
+const sqlite3 = require("sqlite3");
 
-const express = require("express")
-const session = require("express-session")
-
-const app = express()
-
-client.config = config;
-
-client.tweetCooldown = new Set()
-
-client.dispatchers = {}
-client.ttsQueue = {}
-
-t = new Twit({
-    consumer_key: config.twitterConsumer,
-    consumer_secret: config.twitterConsumerSecret,
-    access_token: config.twitterTokenKey,
-    access_token_secret: config.twitterTokenSecret
+// Setup commando client
+const client = new CrackheadCommandoClient({
+    commandPrefix: config.prefix,
+    owner: config.ownerID,
+    invite: 'https://discord.gg/4s4QUbQ',
 });
-//Bind 't' to 'client'
-client.t = t;
 
-// Connect to database
+// Register command groups
+client.registry
+    .registerDefaultTypes()
+    .registerGroups([
+        ["xp", "XP commands"],
+        ["fun", "Fun commands"],
+        ["info", "Info commands"],
+        ["admin", "Admin commands"],
+        ["moderation", "Moderation commands"],
+        ["owner", "Owner only commands"]
+    ])
+    .registerDefaultGroups()
+    .registerDefaultCommands({
+        unknownCommand: false
+    })
+    .registerCommandsIn(path.join(__dirname, 'commands'))
+
 connectDB(config.mongouri)
 
-// This loop reads the /events/ folder and attaches each event file to the appropriate event.
-fs.readdir("./events/", (err, files) => {
-    if (err) return console.error(err);
-    files.forEach(file => {
-        if (!file.endsWith(".js")) return;
-        const event = require(`./events/${file}`);
-        let eventName = file.split(".")[0];
-        client.on(eventName, event.bind(null, client));
-        delete require.cache[require.resolve(`./events/${file}`)];
-    });
-});
+client.setProvider(
+    sqlite.open({ filename: path.join(__dirname, 'settings.sqlite3'), driver: sqlite3.Database }).then(db => new SQLiteProvider(db))
+).catch(console.error);
 
-client.commands = new Enmap();
-
-fs.readdir("./commands/", (err, files) => {
-    if (err) return console.error(err);
-    files.forEach(file => {
-        if (!file.endsWith(".js")) return;
-        // Load the command file itself
-        let props = require(`./commands/${file}`);
-        // Get just the command name from the file name
-        let commandName = file.split(".")[0];
-        console.log(`[COMMANDS] Attempting to load command ${commandName}`);
-        // Here we simply store the whole thing in the command Enmap. We're not running it right now.
-        client.commands.set(commandName, props);
-        // Save the command alias(es) to the collection
-        if (props.info && props.info.aliases && props.info.aliases.length) {
-            props.info.aliases.forEach(aliasName => {
-                client.commands.set(aliasName, props)
-                console.log(`[ALIASES] Attempting to load alias ${aliasName}`);
-            })
-        }
-    });
-});
-
-client.words = new Enmap();
-
-fs.readdir("./words/", (err, files) => {
-    if (err) return console.error(err);
-    files.forEach(file => {
-        if (!file.endsWith(".js")) return;
-        // Load the command file itself
-        let props = require(`./words/${file}`);
-        // Get just the command name from the file name
-        let wordName = file.split(".")[0];
-        console.log(`[WORDS] Attempting to load word ${wordName}`);
-        // Here we simply store the whole thing in the command Enmap. We're not running it right now.
-        client.words.set(wordName, props);
-    });
-});
-
-client.login(config.token);
-
-client.execQueue = (guild, connection, first = false) => {
-    if (first) {
-        client.dispatchers[guild.id] = connection.play(client.ttsQueue[guild.id][0])
-        client.dispatchers[guild.id].once("finish", () => setTimeout(_ => client.execQueue(guild, connection, false), 1000))
-    } else {
-        client.ttsQueue[guild.id].shift()
-        if (client.ttsQueue[guild.id][0]) {
-            client.dispatchers[guild.id] = connection.play(client.ttsQueue[guild.id][0])
-            client.dispatchers[guild.id].once("finish", () => client.execQueue(guild, connection, false))
-        } else {
-            connection.disconnect()
-            delete client.ttsQueue[guild.id]
-            delete client.dispatchers[guild.id]
-        }
+// XP
+client.on("message", message => {
+    if (
+        message.author.bot ||
+        message.channel.type !== "text" ||
+        !message.guild.available
+    ) {
+        return;
     }
-}
 
-app.use(session({
-    secret: config.web.sessionSecret,
-    resave: false,
-    saveUninitialized: true,
-    expires: 604800000,
-    //cookie: { secure: true },
-    name: 'CrackheadID'
-}));
-
-app.disable('x-powered-by')
-
-// Read routes folder and connect it
-client.on("ready", () => {
-    fs.readdir("./web/routes/", (err, routes) => {
-        if (err) return console.error(err);
-        routes.forEach(r => {
-            if (!r.endsWith(".js")) return;
-
-            console.log(`[WEB] Attempting to load route ${r.split('.js')[0]}`)
-            const route = require(`./web/routes/${r}`)(client)
-            app.use(route.path, route.router)
-        })
-    })
+    client.xp.giveUserXP(message.member, message.guild)
 })
 
-app.listen(config.web.port, () => console.log(`[WEB] App started on port ${config.web.port}`))
+client.on("messageDelete", message => {
+    client.snipes.saveSnipe(message, "delete")
+})
+
+client.on("messageUpdate", oldMessage => {
+    client.snipes.saveSnipe(oldMessage, "edit")
+})
+
+client.once('ready', () => {
+    console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
+    client.user.setPresence({
+        activity: {
+            name: `you being a crackhead 👀 | ${config.prefix}help`,
+            type: "WATCHING"
+        }
+    })
+    console.log("Checking all guilds in database")
+    checkAllGuilds(client)
+});
+
+client.on('error', console.error);
+
+client.on('commandError', (cmd, err) => {
+    if (err instanceof FriendlyError)
+        console.error(`Error in command ${cmd.groupID}: ${cmd.memberName} ${err}`);
+});
+
+client.login(config.token)
