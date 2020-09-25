@@ -53,6 +53,14 @@ client.on("message", message => {
     client.xp.giveUserXP(message.member, message.guild)
 })
 
+client.on("messageDelete", message => {
+    client.snipes.saveSnipe(message, "delete")
+})
+
+client.on("messageUpdate", oldMessage => {
+    client.snipes.saveSnipe(oldMessage, "edit")
+})
+
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
     client.user.setPresence({
