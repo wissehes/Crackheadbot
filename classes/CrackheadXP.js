@@ -142,7 +142,7 @@ class CrackheadXP {
 
     async getCardData(userXP, member) {
         const currentXP = userXP.xp - this.calculateXPForLevel(userXP.level)
-        const neededXP = this.calculateRequiredXP(userXP.xp) - currentXP
+        const neededXP = this.calculateRequiredXP(userXP.xp) + currentXP
         const rank = await XP.getRank(userXP, member.guild);
 
         return {
