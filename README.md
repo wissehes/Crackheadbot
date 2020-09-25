@@ -1,6 +1,12 @@
 # Crackheadbot
 
-This is a fun little bot I at first created for a single server, but I am now working on making it public for everyone to add to their server.
+## Version 2.0!!
+
+The Crackheadbot is a multifunctional Discord bot written in JavaScript using Discord.js Commando.
+
+# Inviting
+
+Invite Crackheadbot [here](https://discord.com/oauth2/authorize?client_id=647169385252913173&scope=bot&permissions=305659006)
 
 # Features
 
@@ -10,11 +16,12 @@ This is a fun little bot I at first created for a single server, but I am now wo
 - [x] TTS queue: when playing text-to-speech you can queue them.
 - [x] Levels and role rewards
 - [x] Settings for welcome messages, levels and more coming soon
-- [ ] A web dashboard (soon)
 
-# Installation
+# Self hosting
 
-## Requirements
+## Installation
+
+### Requirements
 
 - Node.JS v12
   - This is the main runtime the Crackheadbot runs on
@@ -27,7 +34,7 @@ This is a fun little bot I at first created for a single server, but I am now wo
 - Twitter tokens (twitter consumer, twitter consumer secret, etc.) (optional)
   - This is used for the `tweet` command
 
-## Downloading repository and installing dependencies
+### Downloading repository and installing dependencies
 
 Clone the repo like so:
 
@@ -42,7 +49,7 @@ cd Crackheadbot
 npm install
 ```
 
-## Configurating Crackheadbot
+### Configurating Crackheadbot
 
 First, copy `config.example.js` to `config.js`
 
@@ -52,6 +59,6 @@ cp config.example.js config.js
 
 then change them to their respective values.
 
-# Running Crackheadbot
+## Running Crackheadbot
 
 to start crackheadbot just run `node .`
