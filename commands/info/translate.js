@@ -56,12 +56,14 @@ module.exports = class TranslateCommand extends Command {
         text = value;
       }
 
+      const formattedLanguage = translate.languages[language];
+
       translate(text, { from: "auto", to: language })
         .then((translated) => {
           const embed = new MessageEmbed()
             .setDescription(translated)
             .setColor("RANDOM")
-            .setFooter(`Translated from "${text}"`);
+            .setFooter(`Translated from "${text}" to ${formattedLanguage}`);
           message.embed(embed);
         })
         .catch((err) => {
