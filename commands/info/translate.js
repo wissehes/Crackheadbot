@@ -37,10 +37,10 @@ module.exports = class TranslateCommand extends Command {
             .setFooter(`Translated from "${text}"`);
           message.embed(embed);
         })
-        .catch((err) =>
-          console.error(err)
-          message.say("I couldn't translate that for some reason...")
-        );
+        .catch((err) => {
+          console.error(err);
+          message.say("I couldn't translate that for some reason...");
+        });
     }
   }
 };
