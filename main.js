@@ -10,6 +10,9 @@ const checkAllGuilds = require("./functions/checkAllGuilds");
 const sqlite = require("sqlite");
 const sqlite3 = require("sqlite3");
 
+// Welcome utils
+const welcomeUtils = require("./util/welcome");
+
 // Setup commando client
 const client = new CrackheadCommandoClient({
   commandPrefix: config.prefix,
@@ -66,6 +69,29 @@ client.on("messageDelete", (message) => {
 
 client.on("messageUpdate", (oldMessage) => {
   client.snipes.saveSnipe(oldMessage, "edit");
+});
+
+client.on("guildMemberAdd", async (member) => {
+  const settings = await member.guild.settings.get("settings");
+  if (!settings) return;
+
+  if (settings.joinMessages && settings.joinChannel.length) {
+    const foundChannel = client.channels.resolve(settings.joinChannel);
+
+    if (foundChannel) {
+      try {
+        if (member.guild.me.hasPermission("ATTACH_FILES")) {
+          const welcomeCard = await welcomeUtils.createCard(member);
+          foundChannel.send(welcomeCard);
+        } else {
+          const welcomeEmbed = welcomeUtils.createEmbed(member);
+          foundChannel.send(welcomeEmbed);
+        }
+      } catch (e) {
+        void e;
+      }
+    }
+  }
 });
 
 client.once("ready", () => {
