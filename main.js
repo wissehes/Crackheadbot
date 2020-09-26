@@ -13,6 +13,9 @@ const sqlite3 = require("sqlite3");
 // Welcome utils
 const welcomeUtils = require("./util/welcome");
 
+// Leave utils
+const leaveUtils = require("./util/leave");
+
 // Setup commando client
 const client = new CrackheadCommandoClient({
   commandPrefix: config.prefix,
@@ -87,6 +90,23 @@ client.on("guildMemberAdd", async (member) => {
           const welcomeEmbed = welcomeUtils.createEmbed(member);
           foundChannel.send(welcomeEmbed);
         }
+      } catch (e) {
+        void e;
+      }
+    }
+  }
+});
+
+client.on("guildMemberRemove", async (member) => {
+  const settings = await member.guild.settings.get("settings");
+  if (!settings) return;
+
+  if (settings.leaveMessages && settings.leaveChannel.length) {
+    const foundChannel = client.channels.resolve(settings.leaveChannel);
+    if (foundChannel) {
+      const leaveEmbed = leaveUtils.createCard(member);
+      try {
+        foundChannel.send(leaveEmbed);
       } catch (e) {
         void e;
       }
