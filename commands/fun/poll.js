@@ -39,16 +39,31 @@ module.exports = class PollCommand extends Command {
       answers = answers.slice(0, 10);
     }
 
-    message
-      .code(
-        "xl",
-        `${question}
+    if (answers.includes("yes") && answers.includes("no")) {
+      message.code("xl", question).then((message) => {
+        message
+          .react("👍")
+          .then(() => message.react("👎"))
+          .then(() => {
+            if (answers.includes("maybe")) {
+              message.react("👀");
+            }
+          });
+      });
+    } else {
+      message
+        .code(
+          "xl",
+          `${question}
 ==========================
 ${answers.map((a, i) => `${i + 1}. ${this.capitalize(a)}`).join("\n")}`
-      )
-      .then((message) => {
-        answers.forEach((_, i) => message.react(this.getQuestionEmoji(i + 1)));
-      });
+        )
+        .then((message) => {
+          answers.forEach((_, i) =>
+            message.react(this.getQuestionEmoji(i + 1))
+          );
+        });
+    }
   }
 
   getQuestionEmoji(number) {
