@@ -1,3 +1,4 @@
+const { Argument } = require("discord.js-commando");
 const Command = require("../../classes/BaseCommand");
 
 module.exports = class PollCommand extends Command {
@@ -14,16 +15,21 @@ module.exports = class PollCommand extends Command {
           type: "string",
           prompt: "What is the poll question?",
         },
-        {
-          key: "answers",
-          type: "string",
-          prompt: "What are the answers?",
-          infinite: true,
-        },
       ],
     });
   }
-  run(message, { question, answers }) {
+  async run(message, { question }) {
+    const answersArg = new Argument(this.client, {
+      key: "answers",
+      type: "string",
+      prompt: "What are the answers?",
+      infinite: true,
+    });
+    const { value } = await answersArg.obtain(message);
+    if (!value || !value.length) return;
+
+    const answers = value;
+
     if (answers.length > 10) {
       message
         .reply(
