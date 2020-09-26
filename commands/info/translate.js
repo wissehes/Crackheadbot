@@ -1,6 +1,7 @@
 const Command = require("../../classes/BaseCommand");
 const translate = require("translate-google");
 const { MessageEmbed } = require("discord.js");
+const { Argument } = require("discord.js-commando");
 
 module.exports = class TranslateCommand extends Command {
   constructor(client) {
@@ -11,8 +12,12 @@ module.exports = class TranslateCommand extends Command {
       memberName: "translate",
       description: "Translate text 😌",
       details:
-        "Translate text from various languages to English. It can currently only translate to English.",
-      examples: ["translate Yo hablo Español", "translate <text>"],
+        "Translate texts to a specific language. The default is English, to see the available languages user `crack listlang`.",
+      examples: [
+        "translate Yo hablo Español",
+        "translate es I speak spanish",
+        "translate {language} {text}",
+      ],
       throttling: {
         duration: 15,
         usages: 2,
@@ -22,14 +27,36 @@ module.exports = class TranslateCommand extends Command {
           key: "text",
           type: "string",
           prompt: "What do you want to translate?",
-          //default: "",
         },
       ],
     });
   }
-  run(message, { text }) {
+
+  languages = new Set(Object.keys(translate.languages));
+
+  async run(message, { text }) {
     if (text.length) {
-      translate(text, { from: "auto", to: "en" })
+      let language = "en";
+
+      const firstArg = text.split(" ")[0].toLowerCase();
+
+      if (this.languages.has(firstArg)) {
+        text = text.slice(firstArg.length + 1);
+        language = firstArg;
+      }
+
+      if (!text.length) {
+        const askTextArg = new Argument(this.client, {
+          key: "text",
+          type: "string",
+          prompt: "What do you want to translate?",
+        });
+
+        const { value } = await askTextArg.obtain(message);
+        text = value;
+      }
+
+      translate(text, { from: "auto", to: language })
         .then((translated) => {
           const embed = new MessageEmbed()
             .setDescription(translated)
