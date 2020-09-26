@@ -16,6 +16,9 @@ const welcomeUtils = require("./util/welcome");
 // Leave utils
 const leaveUtils = require("./util/leave");
 
+// Guild utils
+const guildUtis = require("./util/guild");
+
 // Setup commando client
 const client = new CrackheadCommandoClient({
   commandPrefix: config.prefix,
@@ -72,6 +75,24 @@ client.on("messageDelete", (message) => {
 
 client.on("messageUpdate", (oldMessage) => {
   client.snipes.saveSnipe(oldMessage, "edit");
+});
+
+client.on("guildRemove", (guild) => {
+  const foundChannel = client.channels.resolve(config.statsChannelID);
+
+  if (foundChannel) {
+    const removeServerEmbed = new guildUtis.RemoveServerEmbed(guild);
+    foundChannel.send(removeServerEmbed.embed);
+  }
+});
+
+client.on("guildCreate", (guild) => {
+  const foundChannel = client.channels.resolve(config.statsChannelID);
+
+  if (foundChannel) {
+    const addServerEmbed = new guildUtis.AddServerEmbed(guild);
+    foundChannel.send(addServerEmbed.embed);
+  }
 });
 
 client.on("guildMemberAdd", async (member) => {
