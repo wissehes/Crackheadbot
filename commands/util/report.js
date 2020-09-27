@@ -39,7 +39,7 @@ module.exports = class ReportCommand extends Command {
     });
   }
 
-  run(message, { type, reportMessage }) {
+  async run(message, { type, reportMessage }) {
     // "Thank you for submitting" embed
     const thanksEmbed = new MessageEmbed()
       .setTitle(type[1])
@@ -58,15 +58,17 @@ module.exports = class ReportCommand extends Command {
       .setTimestamp()
       .setFooter(`User ID: ${message.author.id}`);
 
-    await this.DMOwners(reportEmbed)
-        message.embed(thanksEmbed)
+    await this.DMOwners(reportEmbed);
+    message.embed(thanksEmbed);
   }
 
   async DMOwners(embed) {
-    for(const owner in this.client.owners) {
+    for (const owner in this.client.owners) {
       try {
-        await owner.send(embed)
-      } catch(e) { void e }
+        await owner.send(embed);
+      } catch (e) {
+        void e;
+      }
     }
     return true;
   }
