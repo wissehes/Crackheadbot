@@ -63,7 +63,7 @@ module.exports = class ReportCommand extends Command {
   }
 
   async DMOwners(embed) {
-    for (const owner in this.client.owners) {
+    for (let owner of this.client.owners) {
       try {
         await owner.send(embed);
       } catch (e) {
