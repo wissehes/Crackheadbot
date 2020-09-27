@@ -36,6 +36,7 @@ client.registry
     ["admin", "Admin commands"],
     ["moderation", "Moderation commands"],
     ["owner", "Owner only commands"],
+    ["util", "Utility commands"],
   ])
   .registerDefaultGroups()
   .registerDefaultCommands({
