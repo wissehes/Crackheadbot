@@ -17,7 +17,7 @@ const welcomeUtils = require("./util/welcome");
 const leaveUtils = require("./util/leave");
 
 // Guild utils
-const guildUtis = require("./util/guild");
+const guildUtils = require("./util/guild");
 
 // Setup commando client
 const client = new CrackheadCommandoClient({
@@ -78,19 +78,23 @@ client.on("messageUpdate", (oldMessage) => {
 });
 
 client.on("guildRemove", (guild) => {
+  client.setPresence();
+
   const foundChannel = client.channels.resolve(config.statsChannelID);
 
   if (foundChannel) {
-    const removeServerEmbed = new guildUtis.RemoveServerEmbed(guild);
+    const removeServerEmbed = new guildUtils.RemoveServerEmbed(guild);
     foundChannel.send(removeServerEmbed.embed);
   }
 });
 
 client.on("guildCreate", (guild) => {
+  client.setPresence();
+
   const foundChannel = client.channels.resolve(config.statsChannelID);
 
   if (foundChannel) {
-    const addServerEmbed = new guildUtis.AddServerEmbed(guild);
+    const addServerEmbed = new guildUtils.AddServerEmbed(guild);
     foundChannel.send(addServerEmbed.embed);
   }
 });
@@ -137,12 +141,8 @@ client.on("guildMemberRemove", async (member) => {
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
-  client.user.setPresence({
-    activity: {
-      name: `you being a crackhead 👀 | ${config.prefix}help`,
-      type: "WATCHING",
-    },
-  });
+  client.setPresence();
+
   console.log("Checking all guilds in database");
   checkAllGuilds(client);
 });
