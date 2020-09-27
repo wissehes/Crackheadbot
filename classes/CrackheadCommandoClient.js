@@ -17,6 +17,15 @@ class CrackheadCommandoClient extends CommandoClient {
     this.snipes = new CrackheadSnipes(this);
     this.twitter = new CrackheadTwitterClient(this, config);
   }
+
+  setPresence() {
+    this.user.setPresence({
+      activity: {
+        name: `you being a crackhead 👀 ✨ ${config.prefix}help ✨ ${this.guilds.cache.size} servers 😼`,
+        type: "WATCHING",
+      },
+    });
+  }
 }
 
 module.exports = CrackheadCommandoClient;
