@@ -52,7 +52,7 @@ module.exports = class ReportCommand extends Command {
         message.author.tag,
         message.author.displayAvatarURL({ dynamic: true })
       )
-      .setTitle(type[2])
+      .setTitle(type[1])
       .setColor(type[2])
       .setDescription(reportMessage)
       .setTimestamp()
