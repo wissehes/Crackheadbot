@@ -144,6 +144,8 @@ client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
   client.setPresence();
 
+  client.apiServer.start(config.web.port);
+
   console.log("Checking all guilds in database");
   checkAllGuilds(client);
 });
