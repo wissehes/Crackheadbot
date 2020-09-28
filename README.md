@@ -9,6 +9,7 @@ The Crackheadbot is a multifunctional Discord bot written in JavaScript using Di
 Invite Crackheadbot [here](https://discord.com/oauth2/authorize?client_id=647169385252913173&scope=bot&permissions=305659006)
 
 # Status
+
 I'm currently recoding the whole bot to use the Discord.js Commando framework. You can see my progress in the [move-to-commando](https://github.com/TheChicken14/Crackheadbot/tree/move-to-commando) branch
 
 # Features
@@ -16,7 +17,6 @@ I'm currently recoding the whole bot to use the Discord.js Commando framework. Y
 - [x] Welome and leave messages
 - [x] Custom welcome messages
 - [x] Fun little commands such as text-to-speech, weirdify and emojify
-- [x] TTS queue: when playing text-to-speech you can queue them.
 - [x] Levels and role rewards
 - [x] Settings for welcome messages, levels and more coming soon
 
