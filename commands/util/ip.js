@@ -8,7 +8,7 @@ module.exports = class IpCommand extends Command {
       aliases: [],
       group: "util",
       memberName: "ip",
-      description: "Dm's the IP address the bot is running on. (owner only)",
+      description: "Dm's the IP address the bot is running on.",
       ownerOnly: true,
       guarded: true,
     });
