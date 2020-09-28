@@ -32,6 +32,7 @@ client.registry
   .registerGroups([
     ["xp", "XP commands"],
     ["fun", "Fun commands"],
+    ["games", "Games"],
     ["info", "Info commands"],
     ["admin", "Admin commands"],
     ["moderation", "Moderation commands"],
