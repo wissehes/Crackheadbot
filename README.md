@@ -24,13 +24,15 @@ I'm currently recoding the whole bot to use the Discord.js Commando framework. Y
 
 ## Installation
 
+### I will not provide any support for self hosted versions of Crackheadbot.
+
 ### Requirements
 
 - Node.JS v12
   - This is the main runtime the Crackheadbot runs on
   - Install via [NVM](https://github.com/nvm-sh/nvm) or [nodejs.org](https://nodejs.org)
 - MongoDB
-  - This is the database Crackheadbot uses to save settings and levels
+  - This is the database Crackheadbot uses to save rewards and levels
 - A Discord bot token
   - This is used to authenticate with Discord
   - Learn more [here](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot)
