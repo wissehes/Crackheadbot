@@ -26,6 +26,7 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
+    "@k3rn31p4nic/google-translate-api": "^1.1.1",
     "axios": "^0.19.2",
     "btoa": "^1.2.1",
     "canvacord": "^4.0.1",
@@ -43,7 +44,6 @@
     "novelcovid": "^3.0.0",
     "sqlite": "^4.0.14",
     "sqlite3": "^5.0.0",
-    "translate-google": "^1.4.3",
     "twit": "^2.2.11"
   }
 }
