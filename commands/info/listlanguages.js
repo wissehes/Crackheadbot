@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { languages } = require("translate-google");
+const { languages } = require("@k3rn31p4nic/google-translate-api");
 const Command = require("../../classes/BaseCommand");
 
 module.exports = class ListlanguagesCommand extends Command {

@@ -1,6 +1,6 @@
 const Command = require("../../classes/BaseCommand");
 const googleTTS = require("google-tts-api");
-const { languages } = require("translate-google");
+const { languages } = require("@k3rn31p4nic/google-translate-api");
 const { Argument } = require("discord.js-commando");
 
 const availableVoices = [

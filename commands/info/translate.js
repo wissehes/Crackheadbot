@@ -1,5 +1,5 @@
 const Command = require("../../classes/BaseCommand");
-const translate = require("translate-google");
+const translate = require("@k3rn31p4nic/google-translate-api");
 const { MessageEmbed } = require("discord.js");
 const { Argument } = require("discord.js-commando");
 
@@ -60,10 +60,15 @@ module.exports = class TranslateCommand extends Command {
 
       translate(text, { from: "auto", to: language })
         .then((translated) => {
+          const fromLanguage =
+            translate.languages[translated.from.language.iso];
+
           const embed = new MessageEmbed()
-            .setDescription(translated)
+            .setDescription(translated.text)
             .setColor("RANDOM")
-            .setFooter(`Translated from "${text}" to ${formattedLanguage}`);
+            .setFooter(
+              `Translated "${text}" from ${fromLanguage} to ${formattedLanguage}`
+            );
           message.embed(embed);
         })
         .catch((err) => {
