@@ -7,7 +7,7 @@ module.exports = class MemeCommand extends Command {
   constructor(client) {
     super(client, {
       name: "meme",
-      aliases: [],
+      aliases: ["reddit"],
       group: "fun",
       memberName: "meme",
       description: "Show a meme from reddit 🥴",
@@ -15,10 +15,33 @@ module.exports = class MemeCommand extends Command {
         duration: 3,
         usages: 1,
       },
+      args: [
+        {
+          key: "subreddit",
+          prompt: "Which subreddit?",
+          type: "string",
+          default: "",
+          validate: (v) => {
+            if (v.includes(" ")) {
+              return "Subreddit can't contain spaces-";
+            } else return true;
+          },
+          parse: (v) => {
+            if (v.startsWith("/r/")) {
+              return v.substr(3);
+            } else if (v.startsWith("r/")) {
+              return v.substr(2);
+            }
+            return v;
+          },
+        },
+      ],
     });
   }
-  async run(message) {
-    const { data: meme } = await axios.get(memeApiURL);
+  async run(message, { subreddit }) {
+    const api = subreddit.length ? `${memeApiURL}/${subreddit}` : memeApiURL;
+
+    const { data: meme } = await axios.get(api);
 
     if (!meme) {
       return message.say("I couldnt get a meme ✋😔");
