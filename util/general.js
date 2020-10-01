@@ -30,6 +30,12 @@ class GeneralUtils {
 
     return array;
   }
+
+  static capitalize(string) {
+    let splitted = string.trim().split("");
+    splitted[0] = splitted[0].toUpperCase();
+    return splitted.join("");
+  }
 }
 
 module.exports = GeneralUtils;
