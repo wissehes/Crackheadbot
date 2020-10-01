@@ -52,9 +52,16 @@ module.exports = {
     sidebar: {
       "/guide/": [
         {
-          title: "Guide",
+          title: "Introduction",
           collapsable: false,
           children: ["", "using-vue"],
+        },
+      ],
+      "/config/": [
+        {
+          title: "Configuration",
+          collapsable: false,
+          children: ["", "welcome", "bye-bye"],
         },
       ],
     },
