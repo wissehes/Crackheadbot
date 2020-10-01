@@ -102,8 +102,11 @@ dist
 
 # TernJS port file
 .tern-port
-config.js
-twitchbot/
+
+# Config file
+/config.js
+
+# Other data
 data/emoji.json
 data/findEmoji.js
 
