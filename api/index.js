@@ -17,6 +17,11 @@ class CrackheadAPI {
    * @param {Number} port The port you want to listen on
    */
   start(port) {
+    this.app.use((req, res, next) => {
+      res.header("Access-Control-Allow-Origin", "*");
+      next();
+    });
+
     this.routes = fs.readdirSync(`${__dirname}/routes`);
     this.routes.forEach((routePath) => {
       const route = require(`./routes/${routePath}`);
