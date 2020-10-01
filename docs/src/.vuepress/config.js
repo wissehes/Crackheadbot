@@ -30,11 +30,11 @@ module.exports = {
    * ref：https://v1.vuepress.vuejs.org/theme/default-theme-config.html
    */
   themeConfig: {
-    repo: "",
+    repo: "https://github.com/TheChicken14/Crackheadbot",
     editLinks: false,
-    docsDir: "",
+    docsDir: "docs",
     editLinkText: "",
-    lastUpdated: false,
+    lastUpdated: true,
     nav: [
       {
         text: "Guide",
