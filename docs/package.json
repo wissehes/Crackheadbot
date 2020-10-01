@@ -1,0 +1,19 @@
+{
+  "name": "Crackheadbot",
+  "version": "0.0.1",
+  "description": "A Discord bot for the crackheads 😼",
+  "main": "index.js",
+  "authors": {
+    "name": "TheChicken14",
+    "email": "wisse@wissehes.nl"
+  },
+  "repository": "https://github.com/TheChicken14/Crackheadbot/Crackheadbot",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  }
+}
