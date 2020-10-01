@@ -10,7 +10,7 @@ module.exports = {
    */
   description: description,
 
-  base: "/crackheadbot/",
+  base: "/Crackheadbot/",
 
   /**
    * Extra tags to be injected to the page HTML `<head>`
