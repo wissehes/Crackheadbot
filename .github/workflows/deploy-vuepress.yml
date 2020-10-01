@@ -10,7 +10,6 @@ jobs:
       working-dir: ./docs/
     steps:
       - name: Checkout 🛎️
-        working-directory: ${{env.working-dir}}
         uses: actions/checkout@v2
         with:
           persist-credentials: false
@@ -26,4 +25,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: src/.vuepress/dist
+          FOLDER: ./docs/src/.vuepress/dist
