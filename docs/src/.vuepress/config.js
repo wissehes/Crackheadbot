@@ -44,6 +44,10 @@ module.exports = {
         text: "Settings",
         link: "/config/",
       },
+      {
+        text: "Invite",
+        link: "https://crackheadbot.wissehes.nl/invite",
+      },
     ],
     sidebar: {
       "/guide/": [
