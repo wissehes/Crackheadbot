@@ -14,6 +14,9 @@ class CommandsRoute {
         aliases: command.aliases || [],
         examples: command.examples || [],
         group: command.group.name,
+        format: `${this.client.commandPrefix}${command.name}${
+          command.format ? " " + command.format : ""
+        }`,
         groupID: command.groupID,
         ownerOnly: command.ownerOnly || false,
       }));
