@@ -1,11 +1,14 @@
 <template>
   <div>
     <div v-if="!loading">
-      <Command
-        v-for="command in commands"
-        :key="command.name"
-        :command="command"
-      />
+      <div v-for="group in groups" :key="group.id">
+        <h2>{{ group.name }}</h2>
+        <Command
+          v-for="command in group.commands"
+          :key="command.name"
+          :command="command"
+        />
+      </div>
     </div>
     <div v-else>
       <p>
@@ -26,6 +29,7 @@ export default {
     loading: true,
     error: false,
     commands: [],
+    groups: [],
   }),
   components: {
     Command,
@@ -39,6 +43,21 @@ export default {
       })
       .then((commands) => {
         this.loading = false;
+
+        commands.forEach((command) => {
+          let foundGroup = this.groups.find((a) => a.id == command.groupID);
+          if (foundGroup) {
+            foundGroup.commands.push(command);
+          } else {
+            this.groups.push({
+              name: command.group,
+              id: command.groupID,
+              commands: [command],
+            });
+          }
+        });
+        console.log(this.groups);
+
         this.commands = commands;
       })
       .catch((a) => (this.error = true));
