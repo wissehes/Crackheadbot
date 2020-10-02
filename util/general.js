@@ -36,6 +36,10 @@ class GeneralUtils {
     splitted[0] = splitted[0].toUpperCase();
     return splitted.join("");
   }
+
+  static wait(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+  }
 }
 
 module.exports = GeneralUtils;
