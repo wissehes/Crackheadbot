@@ -32,14 +32,11 @@ module.exports = class XPCommand extends Command {
     if (message.guild.me.hasPermission("ATTACH_FILES")) {
       message.channel.startTyping();
 
-      const image = await this.client.xp.getXPCard(
-        message.member,
-        message.guild
-      );
+      const image = await this.client.xp.getXPCard(member, message.guild);
 
       card = new MessageAttachment(image, "rank.png");
     } else {
-      card = await this.client.xp.getXPEmbed(message.member, message.guild);
+      card = await this.client.xp.getXPEmbed(member, message.guild);
     }
     message.channel.send(card);
     message.channel.stopTyping();
