@@ -81,7 +81,14 @@ class CrackheadXP {
     });
 
     if (!foundXP) {
-      throw new Error("No user found!");
+      const newXP = new XP({
+        userID: user.id || user,
+        guildID: guild.id,
+        xp: 0,
+        level: 0,
+      });
+      await newXP.save();
+      return newXP;
     }
 
     return foundXP;
