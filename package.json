@@ -29,7 +29,7 @@
     "@k3rn31p4nic/google-translate-api": "^1.1.1",
     "axios": "^0.19.2",
     "btoa": "^1.2.1",
-    "canvacord": "^4.0.1",
+    "canvacord": "^5.0.2",
     "common-tags": "^1.8.0",
     "discord.js": "^12.2.0",
     "discord.js-commando": "discordjs/Commando",
