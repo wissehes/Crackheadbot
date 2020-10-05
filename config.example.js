@@ -9,4 +9,10 @@ module.exports = {
   twitterTokenSecret: "", // Twitter token secret
   badWordsRegex: [], // An array of bad word regexes
   mongouri: "mongodb://localhost/crackheadbot", // MongoDB connection URI
+  web: {
+    port: 8080, // Webserver port
+  },
+  api: {
+    ksoft: "", // KSoft.SI Api token
+  },
 };
