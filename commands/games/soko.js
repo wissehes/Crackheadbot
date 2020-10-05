@@ -1,3 +1,5 @@
+const { stripIndents } = require("common-tags");
+const { MessageEmbed } = require("discord.js");
 const Command = require("../../classes/BaseCommand");
 const { Soko } = require("../../util/Soko");
 
@@ -24,7 +26,9 @@ module.exports = class SokoCommand extends Command {
 
     const grid = soko.getGrid();
 
-    let msg = await message.say(grid);
+    const gridEmbed = this.createGridEmbed(grid, message.author);
+
+    let msg = await message.embed(gridEmbed);
 
     for (let i = 0; i < reactions.length; i++) {
       await msg.react(reactions[i][0]);
@@ -43,10 +47,15 @@ module.exports = class SokoCommand extends Command {
 
       if (text == "stop") {
         collector.stop();
+        const stopEmbed = new MessageEmbed()
+          .setTitle("Stopped")
+          .setDescription("Stopped this game of Soko!");
 
-        message.say("Stopped!");
+        message.edit(stopEmbed);
       } else {
         const newGrid = soko.reGenerateGrid(text);
+
+        const newGridEmbed = this.createGridEmbed(newGrid, message.author);
 
         // Remove user's reaction
         msg.reactions
@@ -55,11 +64,28 @@ module.exports = class SokoCommand extends Command {
           .catch((e) => {});
 
         if (soko.won) {
-          message.say("YOU WON!");
+          collector.stop();
+          const wonEmbed = new MessageEmbed()
+            .setTitle("You win!")
+            .setDescription("Congratulations! You won this game of Soko!");
+          return msg.edit(wonEmbed);
         }
 
-        await msg.edit(newGrid);
+        await msg.edit(newGridEmbed);
       }
     });
+  }
+
+  createGridEmbed(grid, user) {
+    const embed = new MessageEmbed()
+      .setTitle("Soko")
+      .setAuthor(user.username, user.displayAvatarURL({ dynamic: true }))
+      .setDescription(stripIndents`
+      ${grid}
+
+      **Use the reactions to move the player!**
+      `);
+
+    return embed;
   }
 };
