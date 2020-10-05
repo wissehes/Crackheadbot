@@ -6,11 +6,11 @@ class Soko {
     this.won = false;
     this.lost = false;
 
-    this.wall = "🟥";
-    this.empty = "🟧";
+    this.wall = "🟦";
+    this.empty = ":black_large_square:";
     this.player = "😳";
     this.ball = "🔘";
-    this.goal = "🔷";
+    this.goal = "❎";
 
     this.grids = [];
 
