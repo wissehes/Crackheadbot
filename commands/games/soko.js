@@ -51,7 +51,7 @@ module.exports = class SokoCommand extends Command {
           .setTitle("Stopped")
           .setDescription("Stopped this game of Soko!");
 
-        message.edit(stopEmbed);
+        msg.edit(stopEmbed);
       } else {
         const newGrid = soko.reGenerateGrid(text);
 
