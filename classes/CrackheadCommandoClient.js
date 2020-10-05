@@ -8,6 +8,8 @@ const CrackheadTwitterClient = require("./CrackheadTwitterClient");
 const CrackheadXP = require("./CrackheadXP");
 const CrackheadAPI = require("../api");
 
+const { KSoftClient } = require("@ksoft/api");
+
 const config = require("../config");
 
 class CrackheadCommandoClient extends CommandoClient {
@@ -19,6 +21,7 @@ class CrackheadCommandoClient extends CommandoClient {
     this.snipes = new CrackheadSnipes(this);
     this.twitter = new CrackheadTwitterClient(this, config);
     this.apiServer = new CrackheadAPI(this);
+    this.ksoft = new KSoftClient(config.api.ksoft);
   }
 
   setPresence() {
