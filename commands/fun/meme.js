@@ -1,6 +1,4 @@
 const Command = require("../../classes/BaseCommand");
-const memeApiURL = "https://meme-api.herokuapp.com/gimme";
-const axios = require("axios");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = class MemeCommand extends Command {
@@ -39,22 +37,28 @@ module.exports = class MemeCommand extends Command {
     });
   }
   async run(message, { subreddit }) {
-    const api = subreddit.length ? `${memeApiURL}/${subreddit}` : memeApiURL;
+    let reddit;
+    try {
+      reddit = subreddit.length
+        ? await this.client.ksoft.images.reddit(subreddit, {
+            removeNSFW: true,
+            span: "week",
+          })
+        : await this.client.ksoft.images.meme();
+    } catch (e) {}
 
-    const { data: meme } = await axios.get(api);
-
-    if (!meme) {
+    if (!reddit) {
       return message.say("I couldnt get a meme ✋😔");
     }
 
-    const { title, postLink, url, author, ups } = meme;
-
+    //const { title, postLink, url, author, ups } = post;
+    const { title, upvotes, link, author } = reddit.post;
     const embed = new MessageEmbed()
       .setTitle(title)
-      .setURL(postLink)
+      .setURL(link)
       .setColor("RANDOM")
-      .setImage(url)
-      .setFooter(`⬆️ ${ups} - by /u/${author}`);
+      .setImage(reddit.url)
+      .setFooter(`⬆️ ${upvotes} - by ${author}`);
 
     message.embed(embed);
   }
