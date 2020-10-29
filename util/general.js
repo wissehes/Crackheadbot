@@ -40,6 +40,12 @@ class GeneralUtils {
   static wait(ms) {
     return new Promise((r) => setTimeout(r, ms));
   }
+
+  static trim(string, maxLength) {
+    if (string.length > maxLength) {
+      return string.slice(0, maxLength - 3) + "...";
+    } else return string;
+  }
 }
 
 module.exports = GeneralUtils;
