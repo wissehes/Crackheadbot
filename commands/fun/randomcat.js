@@ -6,7 +6,7 @@ module.exports = class RandomCatCommand extends Command {
   constructor(client) {
     super(client, {
       name: "randomcat",
-      aliases: ["cat", "catpic", "purr"],
+      aliases: ["cat", "catpic", "purr", "pussy"],
       group: "fun",
       memberName: "randomcat",
       description: "Sends a random cat picture 🥺",
