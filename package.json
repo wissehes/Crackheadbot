@@ -32,6 +32,7 @@
     "btoa": "^1.2.1",
     "canvacord": "^5.0.2",
     "common-tags": "^1.8.0",
+    "dblapi.js": "^2.4.1",
     "discord.js": "^12.2.0",
     "discord.js-commando": "discordjs/Commando",
     "enmap": "^5.3.1",
