@@ -1,4 +1,5 @@
 const Command = require("../../classes/BaseCommand");
+const config = require("../../config");
 
 module.exports = class TweetCommand extends Command {
   constructor(client) {
@@ -24,15 +25,23 @@ module.exports = class TweetCommand extends Command {
   }
 
   run(message, { text }) {
+    if (
+      message.guild.id !== config.mainServerID &&
+      !this.client.owners.some((o) => o.id == message.author.id)
+    ) {
+      return message.reply(
+        "This command can only be used in Crackhead Energy!"
+      );
+    }
     this.client.twitter
       .tweet(`${text}\n\n-${message.author.tag}`)
-      .then((data) => {
+      .then((data, err) => {
         message.reply(
           `Yay, it worked! https://twitter.com/CHEnergyTweets/status/${data.id_str}`
         );
       })
-      .catch(() => {
-        message.reply("I couldn't tweet it for some reason 🙄");
+      .catch((e) => {
+        message.reply(`I couldn't tweet it for some reason 🙄: ${e.message}`);
       });
   }
 };
