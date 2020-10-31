@@ -9,6 +9,7 @@ const CrackheadXP = require("./CrackheadXP");
 const CrackheadAPI = require("../api");
 
 const { KSoftClient } = require("@ksoft/api");
+const DBL = require("dblapi.js");
 
 const config = require("../config");
 
@@ -22,6 +23,16 @@ class CrackheadCommandoClient extends CommandoClient {
     this.twitter = new CrackheadTwitterClient(this, config);
     this.apiServer = new CrackheadAPI(this);
     this.ksoft = new KSoftClient(config.api.ksoft);
+
+    if (config.api.dbl) {
+      this.dbl = new DBL(
+        config.api.dbl,
+        {
+          statsInterval: 1800000,
+        },
+        this
+      );
+    }
   }
 
   setPresence() {
