@@ -20,7 +20,11 @@ module.exports = class StatsCommand extends Command {
   }
   run(message) {
     const embed = new MessageEmbed()
-      .setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
+      .setAuthor(
+        this.client.user.username,
+        this.client.user.displayAvatarURL(),
+        this.client.options.invite
+      )
       .setColor("RANDOM")
       .setDescription(
         "Hi! I'm crackheadbot, a Discord bot created with NodeJS and Discord.js Commando."
@@ -40,8 +44,10 @@ module.exports = class StatsCommand extends Command {
       )
       .addField(
         "GitHub Repo",
-        `[TheChicken14/Crackheadbot](https://github.com/TheChicken14/Crackheadbot)`
-      );
+        `[TheChicken14/Crackheadbot](https://github.com/TheChicken14/Crackheadbot)`,
+        true
+      )
+      .addField(`Support server`, this.client.options.invite, true);
     message.embed(embed);
   }
 };
