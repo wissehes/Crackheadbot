@@ -78,7 +78,7 @@ client.on("messageUpdate", (oldMessage) => {
   client.snipes.saveSnipe(oldMessage, "edit");
 });
 
-client.on("guildRemove", (guild) => {
+client.on("guildDelete", (guild) => {
   client.setPresence();
 
   const foundChannel = client.channels.resolve(config.statsChannelID);
