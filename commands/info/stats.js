@@ -47,7 +47,12 @@ module.exports = class StatsCommand extends Command {
         `[TheChicken14/Crackheadbot](https://github.com/TheChicken14/Crackheadbot)`,
         true
       )
-      .addField(`Support server`, this.client.options.invite, true);
+      .addField(`Support server`, this.client.options.invite, true)
+      .addField(
+        `Invite me!`,
+        `[Click here 😼](${this.client.inviteURL})`,
+        true
+      );
     message.embed(embed);
   }
 };
