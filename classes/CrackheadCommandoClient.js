@@ -43,6 +43,10 @@ class CrackheadCommandoClient extends CommandoClient {
       },
     });
   }
+
+  get inviteURL() {
+    return `https://discord.com/oauth2/authorize?client_id=${this.user.id}&scope=bot&permissions=305659006`;
+  }
 }
 
 module.exports = CrackheadCommandoClient;
