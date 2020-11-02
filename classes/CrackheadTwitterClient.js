@@ -19,13 +19,10 @@ class CrackheadTwitterClient {
     return new Promise((resolve, reject) => {
       this.twitter
         .post("statuses/update", { status: text })
-        .then(({ err, data, response }) => {
-          if (!err) {
-            resolve(data);
-          } else {
-            reject(err);
-          }
-        });
+        .then(({ data }) => {
+          resolve(data);
+        })
+        .catch((e) => reject(e));
     });
   }
 }

@@ -35,7 +35,7 @@ module.exports = class TweetCommand extends Command {
     }
     this.client.twitter
       .tweet(`${text}\n\n-${message.author.tag}`)
-      .then((data, err) => {
+      .then((data) => {
         message.reply(
           `Yay, it worked! https://twitter.com/CHEnergyTweets/status/${data.id_str}`
         );
