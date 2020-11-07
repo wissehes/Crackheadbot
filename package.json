@@ -46,6 +46,7 @@
     "node-fetch": "^2.6.1",
     "novelcovid": "^3.0.0",
     "shelljs": "^0.8.4",
+    "shoukaku": "^1.5.2",
     "sqlite": "^4.0.14",
     "sqlite3": "^5.0.0",
     "twit": "^2.2.11"
