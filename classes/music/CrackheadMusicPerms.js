@@ -57,12 +57,12 @@ class CrackheadMusicPerms {
     }
 
     if (!this.tests.PLAYING(message)) {
-      this.errorEmbed("no_player");
+      this.errorEmbed(message, "no_player");
       return false;
     }
 
     if (!this.tests.SAME_VC(message)) {
-      this.errorEmbed("different_member_vc");
+      this.errorEmbed(message, "different_member_vc");
       return false;
     }
 
