@@ -62,22 +62,22 @@ class CrackheadDispatcher {
     this.player.removeAllListeners();
 
     if (reason == "emptyQueue") {
-      this.current.channel.send("the queue is done yall").catch(() => null);
+      this.current.textChannel.send("the queue is done yall").catch(() => null);
     } else if (reason == "error") {
-      this.current.channel.send("some bitch ass error occurred 😭");
+      this.current.textChannel.send("some bitch ass error occurred 😭");
     }
   }
 
   _registerEvents() {
     this.player.on("start", () => {
       if (!this.firstTrack) {
-        const embed = this.utils.nowPlayingEmbed(
-          this.queue,
-          this.player,
-          this.current
+        const vc = this.current.textChannel.guild.channels.cache.get(
+          this.player.voiceConnection.voiceChannelID
         );
 
-        this.current.channel.send(embed).catch((e) => null);
+        this.current.textChannel
+          .send(`Now playing \`${this.current.info.title}\` in \`#${vc.name}\``)
+          .catch((e) => null);
       } else this.firstTrack = false;
     });
 
