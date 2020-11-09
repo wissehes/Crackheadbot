@@ -36,6 +36,8 @@ class CrackheadQueueHandler extends Collection {
 
       this.set(message.guild.id, dispatcher);
 
+      dispatcher.play();
+
       return dispatcher;
     }
   }
