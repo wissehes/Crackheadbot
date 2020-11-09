@@ -4,15 +4,15 @@ const { ShoukakuTrack } = require("shoukaku");
 class CrackheadTrack {
   /**
    *
-   * @param {ShoukakuTrack} track
-   * @param {TextChannel} channel
-   * @param {User} requester
+   * @param {ShoukakuTrack} opts.track
+   * @param {TextChannel} opts.channel
+   * @param {User} opts.requester
    */
-  constructor(track, channel, requester) {
-    this.track = track;
-    this.info = track.info;
-    this.requester = requester;
-    this.textChannel = channel;
+  constructor(opts) {
+    this.track = opts.track;
+    this.info = opts.track.info;
+    this.requester = opts.requester;
+    this.textChannel = opts.channel;
   }
 }
 
