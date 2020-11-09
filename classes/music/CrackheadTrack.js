@@ -3,7 +3,8 @@ const { ShoukakuTrack } = require("shoukaku");
 
 class CrackheadTrack {
   /**
-   *
+   * @constructor
+   * @param {object} opts
    * @param {ShoukakuTrack} opts.track
    * @param {TextChannel} opts.channel
    * @param {User} opts.requester
