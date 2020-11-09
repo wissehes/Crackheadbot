@@ -62,9 +62,9 @@ class CrackheadDispatcher {
     this.player.removeAllListeners();
 
     if (reason == "emptyQueue") {
-      this.textChannel.send("the queue is done yall").catch(() => null);
-    } else {
-      this.textChannel.send("some bitch ass error occurred 😭");
+      this.current.channel.send("the queue is done yall").catch(() => null);
+    } else if (reason == "error") {
+      this.current.channel.send("some bitch ass error occurred 😭");
     }
   }
 
@@ -77,7 +77,7 @@ class CrackheadDispatcher {
           this.current
         );
 
-        this.textChannel.send(embed).catch((e) => null);
+        this.current.channel.send(embed).catch((e) => null);
       } else this.firstTrack = false;
     });
 
