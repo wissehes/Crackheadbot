@@ -9,14 +9,23 @@ module.exports = class SkipCommand extends Command {
       memberName: "skip",
       description: "Skips to the next song x",
       guildOnly: true,
+      args: [
+        {
+          key: "songs",
+          prompt: "How many sounds would you like to skip?",
+          type: "integer",
+          min: 1,
+          default: 1,
+        },
+      ],
     });
   }
-  async run(message) {
+  async run(message, { songs }) {
     if (!this.musicPerms.canSkip(message)) return;
 
     const dispatcher = this.client.queue.get(message.guild.id);
 
-    await dispatcher.player.stopTrack();
+    await dispatcher.skip(songs);
 
     message.react("⏭️");
   }
