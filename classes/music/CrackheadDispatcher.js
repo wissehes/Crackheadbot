@@ -50,6 +50,22 @@ class CrackheadDispatcher {
     await this.player.playTrack(this.current.track);
   }
 
+  /**
+   * Skip a certain amount of tracks
+   * @param {number} num
+   */
+  skip(num) {
+    for (let i = 0; i < num - 1; i++) {
+      if (this.loop == 0) {
+        this.current = this.queue.shift();
+      } else if (this.loop == 2) {
+        this.queue.push(this.current);
+        this.current = this.queue.shift();
+      }
+    }
+    this.player.stopTrack();
+  }
+
   getQueue() {
     // Send it this way so when splicing, it doesnt fuck up this.queue
     return [...this.queue];
