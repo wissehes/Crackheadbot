@@ -1,6 +1,6 @@
 {
   "name": "crackheadbot",
-  "version": "2.0.0",
+  "version": "2.0.5",
   "description": "A multifunctional Discord bot written in JavaScript using Discord.js Commando",
   "main": "main.js",
   "scripts": {
