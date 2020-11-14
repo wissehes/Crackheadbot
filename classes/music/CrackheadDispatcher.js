@@ -66,6 +66,16 @@ class CrackheadDispatcher {
     this.player.stopTrack();
   }
 
+  voiceChannel() {
+    return this.client.channels.resolve(
+      this.player.voiceConnection.voiceChannelID
+    );
+  }
+
+  getPlayer() {
+    return this.client.shoukaku.getPlayer(this.guild.id);
+  }
+
   getQueue() {
     // Send it this way so when splicing, it doesnt fuck up this.queue
     return [...this.queue];
