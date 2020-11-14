@@ -24,6 +24,7 @@ class CrackheadQueueHandler extends Collection {
       const player = await node.joinVoiceChannel({
         guildID: message.guild.id,
         voiceChannelID: message.member.voice.channelID,
+        deaf: true,
       });
 
       const dispatcher = new CrackheadDispatcher({
