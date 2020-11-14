@@ -77,7 +77,7 @@ module.exports = class playCommand extends Command {
     } else {
       message.say(
         `Added \`${
-          track.info.title || "unknown title"
+          firstTrack.info.title || "unknown title"
         }\` to the queue :nail_care:`
       );
     }
