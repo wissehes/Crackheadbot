@@ -6,6 +6,7 @@ module.exports = class playCommand extends Command {
     super(client, {
       name: "play",
       aliases: ["p", "track"],
+      examples: ["play wap"],
       group: "music",
       memberName: "play",
       description: "Play music 💀",
