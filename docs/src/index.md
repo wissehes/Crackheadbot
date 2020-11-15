@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: https://v1.vuepress.vuejs.org/hero.png
+heroImage: https://crackheadbot.wissehes.nl/pfp
 tagline: A Discord bot for the crackheads 😼
 actionText: Quick Start →
 actionLink: /guide/
