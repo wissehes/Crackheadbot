@@ -11,7 +11,7 @@ To see all available settings, run the following command:
 crack settings
 ```
 
-![All settings](/images/all_settings.png)
+![All settings](/Crackheadbot/images/all_settings.png)
 
 All available settings are now listed. The command to see the current value of each setting is listed under the name, so for "Welcome messages" its `crack settings welcome`
 
@@ -23,7 +23,7 @@ To get the value of a setting run `crack settings` followed by the setting you w
 crack settings welcomechannel
 ```
 
-![Current welcome channel](/images/current_welcome_channel.png)
+![Current welcome channel](/Crackheadbot/images/current_welcome_channel.png)
 
 ## Modifying a value
 
@@ -33,4 +33,4 @@ To modify a setting's value, run `crack settings` with the setting you want to m
 crack settings welcome on
 ```
 
-![Enabled welcome messages](/images/enable_welcome_messages.png)
+![Enabled welcome messages](/Crackheadbot/images/enable_welcome_messages.png)
