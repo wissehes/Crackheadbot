@@ -14,6 +14,7 @@ const DBL = require("dblapi.js");
 const config = require("../config");
 const CrackheadShoukakuClient = require("./music/CrackheadShoukakuClient");
 const CrackheadQueueHandler = require("./music/CrackheadQueueHandler");
+const CrackheadRatings = require("./music/CrackheadRatings");
 
 class CrackheadCommandoClient extends CommandoClient {
   constructor(options) {
@@ -27,6 +28,7 @@ class CrackheadCommandoClient extends CommandoClient {
     this.ksoft = new KSoftClient(config.api.ksoft);
     this.shoukaku = new CrackheadShoukakuClient(this, config.nodes);
     this.queue = new CrackheadQueueHandler(this);
+    this.ratings = new CrackheadRatings(this);
 
     if (config.api.dbl) {
       this.dbl = new DBL(
