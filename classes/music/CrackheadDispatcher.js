@@ -81,6 +81,10 @@ class CrackheadDispatcher {
     return [...this.queue];
   }
 
+  deleteTrack(index) {
+    this.queue = this.queue.filter((_, i) => i != index);
+  }
+
   destroy(reason) {
     this.player.disconnect();
     this.queue.length = 0;
