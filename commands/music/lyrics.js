@@ -6,9 +6,14 @@ module.exports = class LyricsCommand extends Command {
     super(client, {
       name: "lyrics",
       aliases: [],
+      examples: ["lyrics born this way lady gaga", "lyrics wap cardi b"],
       group: "music",
       memberName: "lyrics",
-      description: "",
+      description: "Shows the lyrics of a track!",
+      throttling: {
+        duration: 5,
+        usages: 1,
+      },
       args: [
         {
           key: "query",
