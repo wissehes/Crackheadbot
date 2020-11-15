@@ -57,7 +57,10 @@ class LyricsUtils {
       const tag = this.author.tag;
       const avatar = this.author.displayAvatarURL({ dynamic: true });
 
-      embed.setFooter(`Requested by ${tag}`, avatar);
+      embed.setFooter(
+        `Requested by ${tag} - Lyrics provided by KSoft.Si`,
+        avatar
+      );
     }
 
     return embed;
