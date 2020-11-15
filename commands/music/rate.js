@@ -32,7 +32,10 @@ module.exports = class RateCommand extends Command {
 
     const { current } = this.client.queue.get(message.guild.id);
 
-    const edited = this.client.ratings.has(message.author, current.track.track);
+    const edited = await this.client.ratings.has(
+      message.author,
+      current.track.track
+    );
 
     const newRating = await this.client.ratings.new({
       track: current.track.track,

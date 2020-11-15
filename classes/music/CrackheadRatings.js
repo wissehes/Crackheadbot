@@ -75,7 +75,7 @@ class CrackheadRatings {
       track,
     });
 
-    return found;
+    return Boolean(found);
   }
 }
 module.exports = CrackheadRatings;
