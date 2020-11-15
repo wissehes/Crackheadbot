@@ -46,6 +46,17 @@ class GeneralUtils {
       return string.slice(0, maxLength - 3) + "...";
     } else return string;
   }
+
+  /**
+   * Get the average between an array of numbers
+   * @param {number[]} arr
+   */
+  static averagenum(arr) {
+    const total = arr.reduce((prev, curr) => prev + curr, 0);
+    const average = total / arr.length;
+
+    return average.toFixed(2);
+  }
 }
 
 module.exports = GeneralUtils;
