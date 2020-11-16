@@ -1,7 +1,6 @@
 <template>
   <div>
     <div v-if="!loading">
-      <h2>{{ commands[0].group }}</h2>
       <Command
         v-for="command in commands"
         :key="command.name"
