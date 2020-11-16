@@ -1,0 +1,1 @@
+<CommandGroup group="music" />
