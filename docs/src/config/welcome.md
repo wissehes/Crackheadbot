@@ -14,7 +14,7 @@ crack settings welcome on
 
 ![Enabled welcome messages](/Crackheadbot/images/enable_welcome_messages.png)
 
-You've now enables welcome messages!
+You've now enabled welcome messages!
 
 ## Setting the welcome channel
 
