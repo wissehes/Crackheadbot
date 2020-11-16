@@ -56,7 +56,7 @@ module.exports = {
         {
           title: "Introduction",
           collapsable: false,
-          children: ["", "using-vue"],
+          children: [""],
         },
       ],
       "/config/": [
