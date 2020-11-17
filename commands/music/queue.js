@@ -45,7 +45,7 @@ module.exports = class QueueCommand extends Command {
         ${this.formatTrack(dispatcher.current)}
 
         **🎶 Playing next:**
-        ${items.join("\n")}
+        ${items.length ? items.join("\n") : "*Empty...*"}
         ${footertext}
         `
       );
