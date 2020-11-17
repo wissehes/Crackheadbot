@@ -34,7 +34,7 @@ module.exports = class LyricsCommand extends Command {
     let realQuery = query;
 
     if (!query && this.client.queue.has(message.guild.id)) {
-      realQuery = this.client.queue.get(message.guild.id).curent.info.title;
+      realQuery = this.client.queue.get(message.guild.id).current.info.title;
     }
 
     let songs;
