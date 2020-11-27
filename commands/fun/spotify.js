@@ -1,7 +1,9 @@
 const { MessageEmbed } = require("discord.js");
 const Command = require("../../classes/BaseCommand");
 
-module.exports = class SpotifyCommand extends Command {
+module.exports = class SpotifyCommand extends (
+  Command
+) {
   constructor(client) {
     super(client, {
       name: "spotify",
@@ -20,7 +22,7 @@ module.exports = class SpotifyCommand extends Command {
       ],
     });
   }
-  run(message, { user }) {
+  async run(message, { user }) {
     const youOrThey = user.id == message.author.id ? "You" : "They";
 
     let presence = user.presence;
@@ -32,11 +34,14 @@ module.exports = class SpotifyCommand extends Command {
     const spotify = presence.activities.find((a) => a.name == "Spotify");
     if (spotify) {
       const embed = new MessageEmbed()
-        .setTitle(`${user.tag}'s Spotify`)
+        .setAuthor(spotify.details)
         .setColor("RANDOM")
-        .setDescription(`**${spotify.details}** by ${spotify.state}`)
+        .setDescription(`by **${spotify.state}**`)
         .setThumbnail(spotify.assets.largeImageURL({ format: "png" }));
-      message.channel.send(embed);
+      const msg = await message.channel.send(embed);
+
+      await msg.react("👍");
+      await msg.react("👎");
     } else {
       message.reply(`${youOrThey}'re not listening to Spotify 👁👄👁`);
     }
