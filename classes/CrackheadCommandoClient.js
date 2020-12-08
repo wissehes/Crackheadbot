@@ -44,7 +44,7 @@ class CrackheadCommandoClient extends CommandoClient {
   setPresence() {
     this.user.setPresence({
       activity: {
-        name: `you being a crackhead 👀 ✨ ${config.prefix}help ✨ ${this.guilds.cache.size} servers 😼`,
+        name: `you being a crackhead 👀 ✨ ${this.commandPrefix}help ✨ ${this.guilds.cache.size} servers 😼`,
         type: "WATCHING",
       },
     });
