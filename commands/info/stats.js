@@ -8,7 +8,9 @@ const {
   getModuleVersion,
 } = require("../../util/info");
 
-module.exports = class StatsCommand extends Command {
+module.exports = class StatsCommand extends (
+  Command
+) {
   constructor(client) {
     super(client, {
       name: "stats",
@@ -19,6 +21,8 @@ module.exports = class StatsCommand extends Command {
     });
   }
   run(message) {
+    const totalPlayers = this.client.shoukaku.totalPlayers;
+
     const embed = new MessageEmbed()
       .setAuthor(
         this.client.user.username,
@@ -37,6 +41,7 @@ module.exports = class StatsCommand extends Command {
       .addField("Uptime", getNodeUptime(), true)
       .addField("System uptime", getOSUptime(), true)
       .addField("Platform", getPlatform(), true)
+      .addField("Playing players", totalPlayers, true)
       .addField(
         "Memory usage",
         `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
