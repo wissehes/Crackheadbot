@@ -16,6 +16,7 @@ module.exports = class SearchCommand extends (
       group: "music",
       memberName: "search",
       description: "Search videos on YouTube",
+      guildOnly: true,
       args: [
         {
           key: "query",
